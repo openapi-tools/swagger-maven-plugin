@@ -54,6 +54,10 @@
         <junit.version>4.12</junit.version>
         <org.mockito.version>2.2.28</org.mockito.version>
         <org.slf4j.version>1.7.21</org.slf4j.version>
+        <org.apache.maven.maven-plugin-annotations.version>3.5</org.apache.maven.maven-plugin-annotations.version>
+        <org.apache.maven.version>3.3.9</org.apache.maven.version>
+        <dk.nykredit.jackson.dataformat.version>1.0.1</dk.nykredit.jackson.dataformat.version>
+        <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>
     </properties>
 
     <dependencies>
@@ -70,22 +74,22 @@
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.5</version>
+            <version>${org.apache.maven.maven-plugin-annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.3.9</version>
+            <version>${org.apache.maven.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <version>3.3.9</version>
+            <version>${org.apache.maven.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-artifact</artifactId>
-            <version>3.3.9</version>
+            <version>${org.apache.maven.version}</version>
         </dependency>
 
         <dependency>
@@ -109,19 +113,19 @@
         <dependency>
             <groupId>org.apache.maven.plugin-testing</groupId>
             <artifactId>maven-plugin-testing-harness</artifactId>
-            <version>3.3.0</version>
+            <version>${org.apache.maven.plugin-testing.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-compat</artifactId>
-            <version>3.3.9</version>
+            <version>${org.apache.maven.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>dk.nykredit.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-hal</artifactId>
-            <version>1.0.1</version>
+            <version>${dk.nykredit.jackson.dataformat.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -164,7 +168,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -179,7 +182,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

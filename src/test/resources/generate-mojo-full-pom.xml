@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>dk.nykredit.swagger.test</groupId>
+    <groupId>io.openapitools.swagger.test</groupId>
     <artifactId>mojo-test</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
@@ -12,12 +12,12 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>dk.nykredit.swagger</groupId>
+                <groupId>io.openapitools.swagger</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
                 <configuration>
                     <swaggerConfig>
                         <schemes>http,https</schemes>
-                        <host>services.nykredit.it</host>
+                        <host>services.example.it</host>
                         <basePath>/base/path</basePath>
                         <info>
                             <title>Title</title>
@@ -36,7 +36,7 @@
                         <descriptionFile>src/test/resources/descriptions.md</descriptionFile>
                     </swaggerConfig>
                     <resourcePackages>
-                        <resourcePackage>dk.nykredit.swagger.example</resourcePackage>
+                        <resourcePackage>io.openapitools.swagger.example</resourcePackage>
                     </resourcePackages>
                     <outputFormats>
                         <outputFormat>JSON</outputFormat>

@@ -1,4 +1,4 @@
-package dk.nykredit.swagger;
+package io.openapitools.swagger;
 
 import java.util.Collections;
 import java.util.HashSet;

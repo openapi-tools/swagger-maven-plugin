@@ -1,12 +1,12 @@
-package dk.nykredit.swagger.example.model;
+package io.openapitools.swagger.example.model;
 
 import java.util.Collection;
 import java.util.Collections;
 
-import dk.nykredit.jackson.dataformat.hal.HALLink;
-import dk.nykredit.jackson.dataformat.hal.annotation.EmbeddedResource;
-import dk.nykredit.jackson.dataformat.hal.annotation.Link;
-import dk.nykredit.jackson.dataformat.hal.annotation.Resource;
+import io.openapitools.jackson.dataformat.hal.HALLink;
+import io.openapitools.jackson.dataformat.hal.annotation.EmbeddedResource;
+import io.openapitools.jackson.dataformat.hal.annotation.Link;
+import io.openapitools.jackson.dataformat.hal.annotation.Resource;
 
 /**
  * Represents a set of accounts from the REST service exposure.

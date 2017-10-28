@@ -1,4 +1,4 @@
-package dk.nykredit.swagger;
+package io.openapitools.swagger;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

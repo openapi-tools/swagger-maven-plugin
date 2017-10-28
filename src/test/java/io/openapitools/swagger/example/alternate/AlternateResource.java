@@ -1,4 +1,4 @@
-package dk.nykredit.swagger.example.alternate;
+package io.openapitools.swagger.example.alternate;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

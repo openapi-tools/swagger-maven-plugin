@@ -1,11 +1,11 @@
-package dk.nykredit.swagger;
+package io.openapitools.swagger;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-import dk.nykredit.swagger.config.SwaggerConfig;
+import io.openapitools.swagger.config.SwaggerConfig;
 import io.swagger.jaxrs.Reader;
 import io.swagger.models.Swagger;
 import org.apache.maven.plugin.AbstractMojo;

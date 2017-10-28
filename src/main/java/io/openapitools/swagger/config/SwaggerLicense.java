@@ -1,4 +1,4 @@
-package dk.nykredit.swagger.config;
+package io.openapitools.swagger.config;
 
 import io.swagger.models.License;
 import org.apache.maven.plugins.annotations.Parameter;

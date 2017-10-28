@@ -1,4 +1,4 @@
-package dk.nykredit.swagger.example.model;
+package io.openapitools.swagger.example.model;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

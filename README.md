@@ -8,8 +8,8 @@ OpenAPI documentation from a JAX-RS based REST service with as little change as 
 
 Module is considered production ready.
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/dk.nykredit.swagger/swagger-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/dk.nykredit.swagger/swagger-maven-plugin/)
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/dk.nykredit.swagger/swagger-maven-plugin/badge.svg)](https://www.javadoc.io/doc/dk.nykredit.swagger/swagger-maven-plugin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://www.javadoc.io/doc/io.openapitools.swagger/swagger-maven-plugin)
 
 # Usage
 
@@ -20,12 +20,12 @@ To have Swagger generate the OpenAPI specifications as part of the build add in 
   <plugins>
     ...
     <plugin>
-      <groupId>dk.nykredit.swagger</groupId>
+      <groupId>io.openapitools.swagger</groupId>
       <artifactId>swagger-maven-plugin</artifactId>
       <configuration>
         <resourcePackages>
-          <resourcePackage>dk.nykredit.swagger.example</resourcePackage>
-          <resourcePackage>dk.nykredit.swagger.example.alternate</resourcePackage>
+          <resourcePackage>io.openapitools.swagger.example</resourcePackage>
+          <resourcePackage>io.openapitools.swagger.example.alternate</resourcePackage>
         </resourcePackages>
       </configuration>
     </plugin>
@@ -46,12 +46,12 @@ Most general properties of the Swagger model is configurable using the swaggerCo
 
 ```xml
 <plugin>
-  <groupId>dk.nykredit.swagger</groupId>
+  <groupId>io.openapitools.swagger</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <swaggerConfig>
       <schemes>http,https</schemes>
-      <host>services.nykredit.it</host>
+      <host>services.example.it</host>
       <basePath>/base/path</basePath>
       <info>
         <title>Title</title>
@@ -78,7 +78,7 @@ The generated OpenAPI specifications may be installed and deployed as Maven arti
 
 ```xml
 <plugin>
-  <groupId>dk.nykredit.swagger</groupId>
+  <groupId>io.openapitools.swagger</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <attachSwaggerArtifact>true</attachSwaggerArtifact>

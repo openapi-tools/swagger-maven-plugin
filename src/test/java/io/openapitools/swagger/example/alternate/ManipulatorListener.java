@@ -1,4 +1,4 @@
-package dk.nykredit.swagger.example.alternate;
+package io.openapitools.swagger.example.alternate;
 
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.jaxrs.Reader;

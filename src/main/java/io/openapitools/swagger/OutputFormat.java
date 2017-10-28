@@ -1,4 +1,4 @@
-package dk.nykredit.swagger;
+package io.openapitools.swagger;
 
 import java.io.File;
 import java.io.IOException;

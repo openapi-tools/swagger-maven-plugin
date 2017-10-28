@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     
     <name>Swagger Maven Plugin</name>
-    <groupId>dk.nykredit.swagger</groupId>
+    <groupId>io.openapitools.swagger</groupId>
     <version>1.0.1-SNAPSHOT</version>
     <artifactId>swagger-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
     <description>Maven plugin to generate OpenAPI documentation using Swagger.</description>
-    <url>https://github.com/Nykredit/swagger-maven-plugin</url>
+    <url>https://github.com/openapi-tools/swagger-maven-plugin</url>
 
     <licenses>
         <license>
@@ -21,17 +21,18 @@
 
     <developers>
         <developer>
-          <name>Thor Anker Kvisgård Lange</name>
-          <email>tal@nykredit.dk</email>
-          <organization>Nykredit</organization>
-          <organizationUrl>http://www.nykredit.dk</organizationUrl>
+            <name>Thor Anker Kvisgård Lange</name>
+            <email>thor.lange@gmail.com</email>
+            <organization>Open API Tools</organization>
+            <organizationUrl>https://github.com/openapitools</organizationUrl>
         </developer>
     </developers>
 
+
     <scm>
-        <connection>scm:git:https://github.com/Nykredit/swagger-maven-plugin.git</connection>
-        <developerConnection>scm:git:https://github.com/Nykredit/swagger-maven-plugin.git</developerConnection>
-        <url>https://github.com/Nykredit/swagger-maven-plugin/tree/master</url>
+        <connection>scm:git:https://github.com/openapi-tools/swagger-maven-plugin.git</connection>
+        <developerConnection>scm:git:https://github.com/openapi-tools/swagger-maven-plugin.git</developerConnection>
+        <url>https://github.com/openapi-tools/swagger-maven-plugin/tree/master</url>
       <tag>HEAD</tag>
     </scm>
 
@@ -50,13 +51,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
-        <io.swagger.version>1.5.12</io.swagger.version>
+        <io.swagger.version>1.5.16</io.swagger.version>
         <junit.version>4.12</junit.version>
-        <org.mockito.version>2.2.28</org.mockito.version>
-        <org.slf4j.version>1.7.21</org.slf4j.version>
+        <org.mockito.version>2.11.0</org.mockito.version>
+        <org.slf4j.version>1.7.25</org.slf4j.version>
         <org.apache.maven.maven-plugin-annotations.version>3.5</org.apache.maven.maven-plugin-annotations.version>
-        <org.apache.maven.version>3.3.9</org.apache.maven.version>
-        <dk.nykredit.jackson.dataformat.version>1.0.1</dk.nykredit.jackson.dataformat.version>
+        <org.apache.maven.version>3.5.0</org.apache.maven.version>
+        <io.openapitools.jackson.dataformat.version>1.0.4</io.openapitools.jackson.dataformat.version>
         <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>
     </properties>
 
@@ -123,9 +124,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>dk.nykredit.jackson.dataformat</groupId>
+            <groupId>io.openapitools.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-hal</artifactId>
-            <version>${dk.nykredit.jackson.dataformat.version}</version>
+            <version>${io.openapitools.jackson.dataformat.version}</version>
             <scope>test</scope>
         </dependency>
 

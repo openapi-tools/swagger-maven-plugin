@@ -44,6 +44,12 @@ public class GenerateMojo extends AbstractMojo {
     private File outputDirectory;
 
     /**
+     * Filename to use for the generated documentation.
+     */
+    @Parameter
+    private String outputFilename = "swagger";
+
+    /**
      * Choosing the output format. Supports JSON or YAML.
      */
     @Parameter
@@ -77,15 +83,16 @@ public class GenerateMojo extends AbstractMojo {
             getLog().debug("Created output directory " + outputDirectory);
         }
 
+
         outputFormats.forEach(format -> {
             try {
-                File outputFile = new File(outputDirectory, "swagger." + format.name().toLowerCase());
+                File outputFile = new File(outputDirectory, outputFilename + "." + format.name().toLowerCase());
                 format.write(swagger, outputFile);
                 if (attachSwaggerArtifact) {
-                    projectHelper.attachArtifact(project, format.name().toLowerCase(), "swagger", outputFile);
+                    projectHelper.attachArtifact(project, format.name().toLowerCase(), outputFilename, outputFile);
                 }
             } catch (IOException e) {
-                throw new RuntimeException("Unable write Swagger document", e);
+                throw new RuntimeException("Unable write " + outputFilename + " document", e);
             }
         });
     }

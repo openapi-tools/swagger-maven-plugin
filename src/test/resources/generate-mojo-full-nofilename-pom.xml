@@ -42,8 +42,8 @@
                         <outputFormat>JSON</outputFormat>
                         <outputFormat>YAML</outputFormat>
                     </outputFormats>
-                    <outputDirectory>target/full</outputDirectory>
-                    <outputFilename>open-api</outputFilename>
+                    <outputDirectory>target/semifull</outputDirectory>
+                    <outputFilename></outputFilename>
                 </configuration>
             </plugin>
         </plugins>

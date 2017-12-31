@@ -73,9 +73,32 @@ public class GenerateMojoIT {
         Mojo mojo = rule.lookupMojo("generate", new File("src/test/resources/generate-mojo-full-pom.xml"));
         mojo.execute();
 
-        File swaggerJson = new File("target/full/swagger.json");
+        File swaggerJson = new File("target/full/open-api.json");
         assertTrue(swaggerJson.exists());
         assertTrue(swaggerJson.length() > 3000);
+
+        File swaggerYaml = new File("target/full/open-api.yaml");
+        assertTrue(swaggerYaml.exists());
+        assertTrue(swaggerYaml.length() > 3000);
+    }
+
+    @Test
+    public void testGenerateFullNoFileName() throws Exception {
+        Path output = Paths.get("target/semifull");
+        if (Files.exists(output)) {
+            Files.walkFileTree(output, new DeleteVisitor());
+        }
+
+        Mojo mojo = rule.lookupMojo("generate", new File("src/test/resources/generate-mojo-full-nofilename-pom.xml"));
+        mojo.execute();
+
+        File swaggerJson = new File("target/semifull/swagger.json");
+        assertTrue(swaggerJson.exists());
+        assertTrue(swaggerJson.length() > 3000);
+
+        File swaggerYaml = new File("target/semifull/swagger.yaml");
+        assertTrue(swaggerYaml.exists());
+        assertTrue(swaggerYaml.length() > 3000);
     }
 
 

@@ -23,6 +23,7 @@
                         <outputFormat>YAML</outputFormat>
                     </outputFormats>
                     <outputDirectory>target/api</outputDirectory>
+                    <outputFilename>swagger</outputFilename>
                 </configuration>
             </plugin>
         </plugins>

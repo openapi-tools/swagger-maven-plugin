@@ -1,12 +1,11 @@
 package io.openapitools.swagger;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.models.Swagger;
-import io.swagger.util.Yaml;
+import io.swagger.v3.core.util.Yaml;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Supported output formats.
@@ -22,7 +21,7 @@ public enum OutputFormat {
         this.writer = writer;
     }
 
-    public void write(Swagger swagger, File file) throws IOException {
+    public void write(OpenAPI swagger, File file) throws IOException {
         writer.write(swagger, file);
     }
 
@@ -31,7 +30,7 @@ public enum OutputFormat {
      */
     @FunctionalInterface
     interface SwaggerWriter {
-        void write(Swagger swagger, File file) throws IOException;
+        void write(OpenAPI swagger, File file) throws IOException;
     }
 
     /**
@@ -40,7 +39,7 @@ public enum OutputFormat {
     static class JSONWriter implements SwaggerWriter {
 
         @Override
-        public void write(Swagger swagger, File file) throws IOException {
+        public void write(OpenAPI swagger, File file) throws IOException {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
             mapper.writeValue(file, swagger);
@@ -53,7 +52,7 @@ public enum OutputFormat {
     static class YAMLWriter implements SwaggerWriter {
 
         @Override
-        public void write(Swagger swagger, File file) throws IOException {
+        public void write(OpenAPI swagger, File file) throws IOException {
             Yaml.mapper().writeValue(file, swagger);
         }
     }

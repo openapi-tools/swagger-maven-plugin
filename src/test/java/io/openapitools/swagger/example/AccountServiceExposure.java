@@ -1,5 +1,9 @@
 package io.openapitools.swagger.example;
 
+import io.openapitools.swagger.example.model.AccountUpdateRepresentation;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.Consumes;
@@ -14,25 +18,14 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import io.openapitools.swagger.example.model.AccountRepresentation;
-import io.openapitools.swagger.example.model.AccountUpdateRepresentation;
-import io.openapitools.swagger.example.model.AccountsRepresentation;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
-
 /**
  * Exposing account as REST service.
  */
 @Path("/accounts")
-@Api(value = "/accounts", authorizations = @Authorization("oauth2"))
 public class AccountServiceExposure {
 
     @GET
     @Produces({"application/hal+json"})
-    @ApiOperation(value = "List all accounts", nickname = "listAccounts", response = AccountsRepresentation.class)
     public Response list(@Context UriInfo uriInfo, @Context Request request) {
         return Response.ok().build();
     }
@@ -40,20 +33,18 @@ public class AccountServiceExposure {
     @GET
     @Path("{regNo}-{accountNo}")
     @Produces({"application/hal+json"})
-    @ApiOperation(value = "Get single account", nickname = "getAccount", response = AccountRepresentation.class)
-    @ApiResponses(value = {
-        @ApiResponse(code = 404, message = "No account found.")
-    })
+    @Operation(description = "Get single account",
+            responses = {@ApiResponse(responseCode = "404", description = "No account found.")})
     public Response get(@PathParam("regNo") @Pattern(regexp = "^[0-9]{4}$") String regNo,
-            @PathParam("accountNo") @Pattern(regexp = "^[0-9]+$") String accountNo,
-            @Context UriInfo uriInfo, @Context Request request) {
+                        @PathParam("accountNo") @Pattern(regexp = "^[0-9]+$") String accountNo,
+                        @Context UriInfo uriInfo, @Context Request request) {
         return Response.ok().build();
     }
 
     @GET
     @Path("{regNo}-{accountNo}")
     @Produces({"application/hal+json;v=1"})
-    @ApiOperation(value = "Version 1", hidden = true)
+    @Hidden
     public Response getV1() {
         return null;
     }
@@ -62,14 +53,12 @@ public class AccountServiceExposure {
     @Path("{regNo}-{accountNo}")
     @Produces({"application/hal+json"})
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Create new or update existing account", nickname = "updateAccount", response = AccountRepresentation.class)
-    @ApiResponses(value = {
-        @ApiResponse(code = 400, message = "No updating possible")
-    })
+    @Operation(description = "Create new or update existing account",
+            responses = @ApiResponse(responseCode = "404", description = "No updating possible"))
     public Response createOrUpdate(@PathParam("regNo") @Pattern(regexp = "^[0-9]{4}$") String regNo,
-            @PathParam("accountNo") @Pattern(regexp = "^[0-9]+$") String accountNo,
-            @Valid AccountUpdateRepresentation account,
-            @Context UriInfo uriInfo, @Context Request request) {
+                                   @PathParam("accountNo") @Pattern(regexp = "^[0-9]+$") String accountNo,
+                                   @Valid AccountUpdateRepresentation account,
+                                   @Context UriInfo uriInfo, @Context Request request) {
         return Response.ok().build();
     }
 

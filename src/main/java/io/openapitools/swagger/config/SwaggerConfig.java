@@ -1,14 +1,14 @@
 package io.openapitools.swagger.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
-
-import io.swagger.models.Info;
-import io.swagger.models.Scheme;
-import io.swagger.models.Swagger;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
@@ -17,22 +17,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 public class SwaggerConfig {
 
     /**
-     * Comma separated list of supported URI schemes.
+     * List of servers for the endpoint.
      */
     @Parameter
-    private String schemes;
-
-    /**
-     * Hostname used to access API.
-     */
-    @Parameter
-    private String host;
-
-    /**
-     * Base path to prepend to all API operations.
-     */
-    @Parameter
-    private String basePath;
+    private List<SwaggerServer> servers = Collections.emptyList();
 
     /**
      * Providing the OpenAPI information description. This might be overridden by ReaderListener or SwaggerDefinition annotation.
@@ -46,38 +34,26 @@ public class SwaggerConfig {
     @Parameter
     private File descriptionFile;
 
-    public Swagger createSwaggerModel() {
-        Swagger swagger = new Swagger();
+    public OpenAPI createSwaggerModel() {
+        OpenAPI spec = new OpenAPI();
 
-        if (schemes != null) {
-            Arrays.stream(schemes.split(",")).forEach(scheme -> {
-                swagger.scheme(Scheme.forValue(scheme));
-            });
-        }
-
-        if (host != null) {
-            swagger.setHost(host);
-        }
-
-        if (basePath != null) {
-            swagger.setBasePath(basePath);
-        }
+        servers.forEach(s -> spec.addServersItem(s.createServerModel()));
 
         if (info != null) {
-            swagger.setInfo(info.createInfoModel());
+            spec.setInfo(info.createInfoModel());
         }
 
         if (descriptionFile != null) {
-            if (swagger.getInfo() == null) {
-                swagger.setInfo(new Info());
+            if (spec.getInfo() == null) {
+                spec.setInfo(new Info());
             }
             try {
-                swagger.getInfo().setDescription(Files.readAllLines(descriptionFile.toPath()).stream().collect(Collectors.joining("\n")));
+                spec.getInfo().setDescription(Files.readAllLines(descriptionFile.toPath()).stream().collect(Collectors.joining("\n")));
             } catch (IOException e) {
                 throw new RuntimeException("Unable to read descriptor file " + descriptionFile, e);
             }
         }
 
-        return swagger;
+        return spec;
     }
 }

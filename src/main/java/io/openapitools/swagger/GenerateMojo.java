@@ -1,13 +1,13 @@
 package io.openapitools.swagger;
 
+import io.swagger.v3.jaxrs2.Reader;
+import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
 import io.openapitools.swagger.config.SwaggerConfig;
-import io.swagger.jaxrs.Reader;
-import io.swagger.models.Swagger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -70,14 +70,14 @@ public class GenerateMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        Reader reader = new Reader(swaggerConfig == null ? new Swagger() : swaggerConfig.createSwaggerModel());
+        Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
         JaxRSScanner reflectiveScanner = new JaxRSScanner();
         if (resourcePackages != null && !resourcePackages.isEmpty()) {
             reflectiveScanner.setResourcePackages(resourcePackages);
         }
 
-        Swagger swagger = reader.read(reflectiveScanner.classes());
+        OpenAPI swagger = reader.read(reflectiveScanner.classes());
 
         if (outputDirectory.mkdirs()) {
             getLog().debug("Created output directory " + outputDirectory);

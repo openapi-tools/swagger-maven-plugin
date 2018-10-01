@@ -1,22 +1,22 @@
 package io.openapitools.swagger.example.alternate;
 
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.jaxrs.Reader;
-import io.swagger.jaxrs.config.ReaderListener;
-import io.swagger.models.Info;
-import io.swagger.models.Swagger;
+import io.swagger.v3.jaxrs2.Reader;
+import io.swagger.v3.jaxrs2.ReaderListener;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 
-@SwaggerDefinition
+@OpenAPIDefinition
 public class ManipulatorListener implements ReaderListener {
     @Override
-    public void beforeScan(Reader reader, Swagger swagger) {
+    public void beforeScan(Reader reader, OpenAPI swagger) {
         Info info = new Info();
         info.setTitle("Manipulator Title");
         swagger.setInfo(info);
     }
 
     @Override
-    public void afterScan(Reader reader, Swagger swagger) {
+    public void afterScan(Reader reader, OpenAPI swagger) {
         swagger.getInfo().setDescription("Description from ReaderListener");
     }
 }

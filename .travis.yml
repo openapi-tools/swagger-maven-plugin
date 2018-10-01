@@ -5,6 +5,7 @@ script: mvn clean verify -Dgpg.skip=true -B
 
 jdk:
   - oraclejdk9
+  - openjdk9
 
 cache:
   directories:

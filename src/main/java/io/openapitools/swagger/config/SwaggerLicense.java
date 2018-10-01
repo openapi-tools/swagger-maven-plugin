@@ -1,6 +1,6 @@
 package io.openapitools.swagger.config;
 
-import io.swagger.models.License;
+import io.swagger.v3.oas.models.info.License;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**

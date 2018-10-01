@@ -43,7 +43,7 @@ The packages containing JAX-RS endpoints must be configured using the resourcePa
 
 ## Properties of Swagger model
 
-Most general properties of the Swagger model is configurable using the swaggerConfig element. Note this may also be configured through the @SwaggerDefinition annotation - see [Customizing your auto-generated Swagger Definitions](http://swagger.io/customizing-your-auto-generated-swagger-definitions-in-1-5-x/).
+Most general properties of the Swagger model is configurable using the swaggerConfig element. Note this may also be configured through the @OpenAPIDefinition annotation - see [Customizing your auto-generated Swagger Definitions](http://swagger.io/customizing-your-auto-generated-swagger-definitions-in-1-5-x/).
 
 ```xml
 <plugin>
@@ -51,9 +51,12 @@ Most general properties of the Swagger model is configurable using the swaggerCo
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <swaggerConfig>
-      <schemes>http,https</schemes>
-      <host>services.example.it</host>
-      <basePath>/base/path</basePath>
+      <servers>
+        <server>
+          <url>https://services.exmple.it/base/path</url>
+          <description>Endpoint URL</description>
+        </server>
+      </servers>
       <info>
         <title>Title</title>
         <version>1.0.0</version>

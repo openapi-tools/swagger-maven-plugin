@@ -56,7 +56,7 @@ public class GenerateMojoIT {
 
         File swaggerJson = new File("target/default/swagger.json");
         assertTrue(swaggerJson.exists());
-        assertTrue(swaggerJson.length() > 3000);
+        assertTrue(swaggerJson.length() > 1200);
         String contents = new String(Files.readAllBytes(swaggerJson.toPath()), StandardCharsets.UTF_8);
         assertTrue(contents.contains("\"/alternate\":"));
         assertFalse(contents.contains("Manipulator Title"));
@@ -75,11 +75,11 @@ public class GenerateMojoIT {
 
         File swaggerJson = new File("target/full/open-api.json");
         assertTrue(swaggerJson.exists());
-        assertTrue(swaggerJson.length() > 3000);
+        assertTrue(swaggerJson.length() > 1500);
 
         File swaggerYaml = new File("target/full/open-api.yaml");
         assertTrue(swaggerYaml.exists());
-        assertTrue(swaggerYaml.length() > 3000);
+        assertTrue(swaggerYaml.length() > 1500);
     }
 
     @Test
@@ -94,11 +94,11 @@ public class GenerateMojoIT {
 
         File swaggerJson = new File("target/semifull/swagger.json");
         assertTrue(swaggerJson.exists());
-        assertTrue(swaggerJson.length() > 3000);
+        assertTrue(swaggerJson.length() > 1500);
 
         File swaggerYaml = new File("target/semifull/swagger.yaml");
         assertTrue(swaggerYaml.exists());
-        assertTrue(swaggerYaml.length() > 3000);
+        assertTrue(swaggerYaml.length() > 1500);
     }
 
 

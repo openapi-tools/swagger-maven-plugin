@@ -16,9 +16,12 @@
                 <artifactId>swagger-maven-plugin</artifactId>
                 <configuration>
                     <swaggerConfig>
-                        <schemes>http,https</schemes>
-                        <host>services.example.it</host>
-                        <basePath>/base/path</basePath>
+                        <servers>
+                            <server>
+                                <url>https://services.example.it/base/path</url>
+                                <description>Example URL</description>
+                            </server>
+                        </servers>
                         <info>
                             <title>Title</title>
                             <version>1.0.0</version>

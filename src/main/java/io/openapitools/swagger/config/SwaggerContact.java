@@ -1,6 +1,6 @@
 package io.openapitools.swagger.config;
 
-import io.swagger.models.Contact;
+import io.swagger.v3.oas.models.info.Contact;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**

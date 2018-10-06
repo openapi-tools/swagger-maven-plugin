@@ -6,7 +6,7 @@ OpenAPI documentation from a JAX-RS based REST service with as little change as 
 
 # Status
 
-Module is considered production ready.
+The plugin is considered production ready. The version 2.x.x of the plugin is supporting generation of OpenAPI version 3 specifications using Swagger 2.x. To generate OpenAPI version 2 specifications using Swagger 1.x use the latest 1.x.x version of the plugin.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/)
 [![Javadoc](https://javadoc.io/badge/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://www.javadoc.io/doc/io.openapitools.swagger/swagger-maven-plugin)

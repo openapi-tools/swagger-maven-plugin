@@ -47,6 +47,8 @@
                     </outputFormats>
                     <outputDirectory>target/semifull</outputDirectory>
                     <outputFilename></outputFilename>
+
+                    <project implementation="io.openapitools.swagger.MavenProjectStub"/>
                 </configuration>
             </plugin>
         </plugins>

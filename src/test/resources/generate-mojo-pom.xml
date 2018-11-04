@@ -24,6 +24,8 @@
                     </outputFormats>
                     <outputDirectory>target/api</outputDirectory>
                     <outputFilename>swagger</outputFilename>
+
+                    <project implementation="io.openapitools.swagger.MavenProjectStub"/>
                 </configuration>
             </plugin>
         </plugins>

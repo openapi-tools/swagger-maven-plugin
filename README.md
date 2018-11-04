@@ -29,6 +29,13 @@ To have Swagger generate the OpenAPI specifications as part of the build add in 
           <resourcePackage>io.openapitools.swagger.example.alternate</resourcePackage>
         </resourcePackages>
       </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>generate</goal>
+          </goals>
+        </execution>
+      </executions>
     </plugin>
     ...
   </plugins>

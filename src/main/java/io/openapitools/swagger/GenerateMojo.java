@@ -4,6 +4,9 @@ import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.Set;
 
@@ -70,7 +73,10 @@ public class GenerateMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        Thread.currentThread().setContextClassLoader(createClassLoader());
+
         Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
+
 
         JaxRSScanner reflectiveScanner = new JaxRSScanner();
         if (resourcePackages != null && !resourcePackages.isEmpty()) {
@@ -95,6 +101,15 @@ public class GenerateMojo extends AbstractMojo {
                 throw new RuntimeException("Unable write " + outputFilename + " document", e);
             }
         });
+    }
+
+    private URLClassLoader createClassLoader() {
+        try {
+            File compiled = new File(project.getBuild().getOutputDirectory());
+            return new URLClassLoader(new URL[] {compiled.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Unable to create class loader with compiled classes", e);
+        }
     }
 
 }

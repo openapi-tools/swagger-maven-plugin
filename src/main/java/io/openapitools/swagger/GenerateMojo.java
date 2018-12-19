@@ -1,5 +1,6 @@
 package io.openapitools.swagger;
 
+import io.openapitools.swagger.config.SwaggerConfig;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
@@ -9,8 +10,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.Set;
-
-import io.openapitools.swagger.config.SwaggerConfig;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -68,6 +67,13 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
 
+    /**
+     * When true, the plugin produces a pretty-printed JSON Swagger specification. Note that this parameter doesn't
+     * have any effect on the generation of the YAML version because YAML is pretty-printed by nature.
+     */
+    @Parameter(defaultValue = "false")
+    private boolean prettyPrint;
+
     @Component
     private MavenProjectHelper projectHelper;
 
@@ -93,7 +99,7 @@ public class GenerateMojo extends AbstractMojo {
         outputFormats.forEach(format -> {
             try {
                 File outputFile = new File(outputDirectory, outputFilename + "." + format.name().toLowerCase());
-                format.write(swagger, outputFile);
+                format.write(swagger, outputFile, prettyPrint);
                 if (attachSwaggerArtifact) {
                     projectHelper.attachArtifact(project, format.name().toLowerCase(), "swagger", outputFile);
                 }

@@ -3,6 +3,7 @@ package io.openapitools.swagger;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
@@ -41,7 +42,7 @@ public enum OutputFormat {
 
         @Override
         public void write(OpenAPI swagger, File file, boolean prettyPrint) throws IOException {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = Json.mapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
             if (prettyPrint) {
                 mapper.enable(SerializationFeature.INDENT_OUTPUT);

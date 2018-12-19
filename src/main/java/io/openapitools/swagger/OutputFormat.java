@@ -1,13 +1,12 @@
 package io.openapitools.swagger;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Supported output formats.

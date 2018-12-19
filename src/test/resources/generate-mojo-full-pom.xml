@@ -35,6 +35,9 @@
                                 <url>https://license</url>
                                 <name>MIT</name>
                             </license>
+                            <extensions>
+                                <x-custom-property>My custom property</x-custom-property>
+                            </extensions>
                         </info>
                         <descriptionFile>src/test/resources/descriptions.md</descriptionFile>
                     </swaggerConfig>

@@ -1,9 +1,7 @@
 package io.openapitools.swagger.config;
 
 import io.swagger.v3.oas.models.info.Info;
-
 import java.util.Map;
-
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**

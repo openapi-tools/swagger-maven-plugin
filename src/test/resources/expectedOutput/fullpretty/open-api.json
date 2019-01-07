@@ -1,0 +1,119 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Title",
+    "description" : "# Description\n\nThis is some description to be included.",
+    "termsOfService" : "Terms",
+    "contact" : {
+      "name" : "My Name",
+      "url" : "https://google.com",
+      "email" : "e@mail.com"
+    },
+    "license" : {
+      "name" : "MIT",
+      "url" : "https://license"
+    },
+    "version" : "1.0.0",
+    "x-custom-property" : "My custom property"
+  },
+  "servers" : [ {
+    "url" : "https://services.example.it/base/path",
+    "description" : "Example URL"
+  } ],
+  "paths" : {
+    "/accounts/{regNo}-{accountNo}" : {
+      "get" : {
+        "description" : "Get single account",
+        "operationId" : "get",
+        "parameters" : [ {
+          "name" : "regNo",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "accountNo",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "No account found."
+          }
+        }
+      },
+      "put" : {
+        "description" : "Create new or update existing account",
+        "operationId" : "createOrUpdate",
+        "parameters" : [ {
+          "name" : "regNo",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "accountNo",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AccountUpdateRepresentation"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "404" : {
+            "description" : "No updating possible"
+          }
+        }
+      }
+    },
+    "/accounts" : {
+      "get" : {
+        "operationId" : "list",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/hal+json" : { }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AccountUpdateRepresentation" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "regNo" : {
+            "pattern" : "^[0-9]{4}$",
+            "type" : "string"
+          },
+          "accountNo" : {
+            "pattern" : "^[0-9]+$",
+            "type" : "string"
+          },
+          "name" : {
+            "pattern" : ".{1,40}",
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}

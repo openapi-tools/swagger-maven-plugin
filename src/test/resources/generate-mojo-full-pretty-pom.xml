@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.openapitools.swagger.test</groupId>
+    <artifactId>mojo-test</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Swagger Generate Maven Mojo</name>
+
+    <dependencies>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.openapitools.swagger</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <configuration>
+                    <swaggerConfig>
+                        <servers>
+                            <server>
+                                <url>https://services.example.it/base/path</url>
+                                <description>Example URL</description>
+                            </server>
+                        </servers>
+                        <info>
+                            <title>Title</title>
+                            <version>1.0.0</version>
+                            <termsOfService>Terms</termsOfService>
+                            <contact>
+                                <email>e@mail.com</email>
+                                <name>My Name</name>
+                                <url>https://google.com</url>
+                            </contact>
+                            <license>
+                                <url>https://license</url>
+                                <name>MIT</name>
+                            </license>
+                            <extensions>
+                                <x-custom-property>My custom property</x-custom-property>
+                            </extensions>
+                        </info>
+                        <descriptionFile>src/test/resources/descriptions.md</descriptionFile>
+                    </swaggerConfig>
+                    <resourcePackages>
+                        <resourcePackage>io.openapitools.swagger.example</resourcePackage>
+                    </resourcePackages>
+                    <outputFormats>
+                        <outputFormat>JSON</outputFormat>
+                        <outputFormat>YAML</outputFormat>
+                    </outputFormats>
+                    <outputDirectory>target/fullpretty</outputDirectory>
+                    <outputFilename>open-api</outputFilename>
+                    <prettyPrint>true</prettyPrint>
+
+                    <project implementation="io.openapitools.swagger.MavenProjectStub"/>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

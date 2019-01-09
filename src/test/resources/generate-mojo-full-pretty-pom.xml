@@ -48,8 +48,9 @@
                         <outputFormat>JSON</outputFormat>
                         <outputFormat>YAML</outputFormat>
                     </outputFormats>
-                    <outputDirectory>target/full</outputDirectory>
+                    <outputDirectory>target/fullpretty</outputDirectory>
                     <outputFilename>open-api</outputFilename>
+                    <prettyPrint>true</prettyPrint>
 
                     <project implementation="io.openapitools.swagger.MavenProjectStub"/>
                 </configuration>

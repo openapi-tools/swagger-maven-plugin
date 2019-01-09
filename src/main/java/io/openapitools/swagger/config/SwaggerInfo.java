@@ -1,6 +1,7 @@
 package io.openapitools.swagger.config;
 
 import io.swagger.v3.oas.models.info.Info;
+import java.util.Map;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
@@ -25,6 +26,9 @@ public class SwaggerInfo {
 
     @Parameter
     private SwaggerLicense license;
+
+    @Parameter
+    private Map<String, Object> extensions;
 
     public Info createInfoModel() {
         Info info = new Info();
@@ -51,6 +55,10 @@ public class SwaggerInfo {
 
         if (license != null) {
             info.setLicense(license.createLicenseModel());
+        }
+
+        if (extensions != null && !extensions.isEmpty()) {
+            info.setExtensions(extensions);
         }
 
         return info;

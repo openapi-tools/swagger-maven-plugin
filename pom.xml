@@ -50,13 +50,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        
-        <io.swagger.core.v3.version>2.0.5</io.swagger.core.v3.version>
+
+        <com.fasterxml.jackson.core.version>2.9.8</com.fasterxml.jackson.core.version>
+        <com.google.guava.version>27.0.1-jre</com.google.guava.version>
+        <io.swagger.core.v3.version>2.0.6</io.swagger.core.v3.version>
         <junit.version>4.12</junit.version>
         <org.mockito.version>2.11.0</org.mockito.version>
         <org.slf4j.version>1.7.25</org.slf4j.version>
         <org.apache.maven.maven-plugin-annotations.version>3.5</org.apache.maven.maven-plugin-annotations.version>
-        <org.apache.maven.version>3.5.0</org.apache.maven.version>
+        <org.apache.maven.version>3.6.0</org.apache.maven.version>
         <io.openapitools.jackson.dataformat.version>1.0.4</io.openapitools.jackson.dataformat.version>
         <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>
         <javax.xml.bin.jaxb-api.version>2.3.0</javax.xml.bin.jaxb-api.version>
@@ -104,6 +106,19 @@
             <artifactId>jaxb-api</artifactId>
             <version>${javax.xml.bin.jaxb-api.version}</version>
             <optional>true</optional>
+        </dependency>
+
+        <!-- jackson version references from swagger has vulnerability -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${com.fasterxml.jackson.core.version}</version>
+        </dependency>
+        <!-- guava 20.0 has vulnerability -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${com.google.guava.version}</version>
         </dependency>
 
         <dependency>

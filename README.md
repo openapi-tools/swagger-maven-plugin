@@ -11,6 +11,8 @@ The plugin is considered production ready. The version 2.x.x of the plugin is su
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/)
 [![Javadoc](https://javadoc.io/badge/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://www.javadoc.io/doc/io.openapitools.swagger/swagger-maven-plugin)
 [![Build status](https://travis-ci.org/openapi-tools/swagger-maven-plugin.svg?branch=master)](https://travis-ci.org/openapi-tools/swagger-maven-plugin)
+[![Known Vulnerabilities](https://snyk.io/test/github/openapi-tools/swagger-maven-plugin/badge.svg)](https://snyk.io/test/github/openapi-tools/swagger-maven-plugin) 
+
 
 # Usage
 

@@ -30,6 +30,10 @@ To have Swagger generate the OpenAPI specifications as part of the build add in 
           <resourcePackage>io.openapitools.swagger.example</resourcePackage>
           <resourcePackage>io.openapitools.swagger.example.alternate</resourcePackage>
         </resourcePackages>
+        <outputDirectory>${basedir}/target/</outputDirectory>
+        <outputFilename>swagger</outputFilename>
+        <outputFormats>JSON,YAML</outputFormats>
+        <prettyPrint>true</prettyPrint>
       </configuration>
       <executions>
         <execution>
@@ -79,6 +83,10 @@ Most general properties of the Swagger model is configurable using the swaggerCo
           <url>https://license</url>
           <name>MIT</name>
         </license>
+        <extensions>
+          <x-custom-field-1>my-custom-field-1</x-custom-field-1>
+          <x-custom-field-2>my-custom-field-2</x-custom-field-2>
+        </extensions>
       </info>
       <descriptionFile>src/test/resources/descriptions.md</descriptionFile>
     </swaggerConfig>

@@ -45,6 +45,13 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter
     private Set<String> resourcePackages;
 
+    
+    /**
+     * Recurse into resourcePackages child packages.
+     */
+    @Parameter(required=false, defaultValue = "false")
+    private Boolean useResourcePackagesChildren;
+    
     /**
      * Directory to contain generated documentation.
      */
@@ -95,7 +102,7 @@ public class GenerateMojo extends AbstractMojo {
         Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
 
-        JaxRSScanner reflectiveScanner = new JaxRSScanner();
+        JaxRSScanner reflectiveScanner = new JaxRSScanner(useResourcePackagesChildren);
         if (resourcePackages != null && !resourcePackages.isEmpty()) {
             reflectiveScanner.setResourcePackages(resourcePackages);
         }

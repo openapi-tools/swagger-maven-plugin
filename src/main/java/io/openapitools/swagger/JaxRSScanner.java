@@ -14,23 +14,48 @@ import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
 
 /**
- * Scan for classes with {@link Path} annotation or {@link OpenAPIDefinition} annotation.
+ * Scan for classes with {@link Path} annotation or {@link OpenAPIDefinition}
+ * annotation.
  */
 class JaxRSScanner {
     private Set<String> resourcePackages = Collections.emptySet();
 
+    private boolean useResourcePackagesChildren = false;
+
+    public JaxRSScanner(Boolean useResourcePackagesChildren) {
+	this.useResourcePackagesChildren = useResourcePackagesChildren != null && useResourcePackagesChildren;
+    }
+
     Set<Class<?>> classes() {
-        ConfigurationBuilder config = ConfigurationBuilder.build(resourcePackages)
-                .setScanners(new ResourcesScanner(), new TypeAnnotationsScanner(), new SubTypesScanner());
-        Reflections reflections = new Reflections(config);
-        Stream<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Path.class).stream()
-                .filter(cls -> resourcePackages.isEmpty() || resourcePackages.contains(cls.getPackage().getName()));
-        Stream<Class<?>> defClasses = reflections.getTypesAnnotatedWith(OpenAPIDefinition.class).stream()
-                .filter(cls -> resourcePackages.isEmpty() || resourcePackages.contains(cls.getPackage().getName()));
-        return Stream.concat(apiClasses, defClasses).collect(Collectors.toSet());
+	ConfigurationBuilder config = ConfigurationBuilder.build(resourcePackages).setScanners(new ResourcesScanner(),
+		new TypeAnnotationsScanner(), new SubTypesScanner());
+	Reflections reflections = new Reflections(config);
+	Stream<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Path.class).stream()
+		.filter(cls -> filterClassByResourcePackages(cls));
+	Stream<Class<?>> defClasses = reflections.getTypesAnnotatedWith(OpenAPIDefinition.class).stream()
+		.filter(cls -> filterClassByResourcePackages(cls));
+	return Stream.concat(apiClasses, defClasses).collect(Collectors.toSet());
+    }
+
+    private boolean filterClassByResourcePackages(Class<?> cls) {
+	if(resourcePackages.isEmpty()) {
+	    return true;
+	}
+	
+	if (useResourcePackagesChildren) {
+	    for (String resourcePackage : resourcePackages) {
+		if(cls.getPackage().getName().startsWith(resourcePackage+".") || cls.getPackage().getName().equals(resourcePackage)) {
+		    return true;
+		}
+	    }
+	} else {
+	    return resourcePackages.contains(cls.getPackage().getName());
+	}
+	
+	return false;
     }
 
     void setResourcePackages(Set<String> resourcePackages) {
-        this.resourcePackages = new HashSet<>(resourcePackages);
+	this.resourcePackages = new HashSet<>(resourcePackages);
     }
 }

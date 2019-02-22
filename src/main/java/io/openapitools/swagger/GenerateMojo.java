@@ -28,6 +28,12 @@ import org.apache.maven.project.MavenProjectHelper;
 public class GenerateMojo extends AbstractMojo {
 
     /**
+     * Skip the execution.
+     */
+    @Parameter(name = "skip", property = "openapi.generation.skip", required = false, defaultValue = "false")
+    private Boolean skip;
+
+    /**
      * Static information to provide for the generation.
      */
     @Parameter
@@ -39,6 +45,13 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter
     private Set<String> resourcePackages;
 
+    
+    /**
+     * Recurse into resourcePackages child packages.
+     */
+    @Parameter(required=false, defaultValue = "false")
+    private Boolean useResourcePackagesChildren;
+    
     /**
      * Directory to contain generated documentation.
      */
@@ -79,12 +92,17 @@ public class GenerateMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+	if (skip!=null && skip) {
+            getLog().info("OpenApi generation is skipped.");
+            return;
+        }
+
         Thread.currentThread().setContextClassLoader(createClassLoader());
 
         Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
 
-        JaxRSScanner reflectiveScanner = new JaxRSScanner();
+        JaxRSScanner reflectiveScanner = new JaxRSScanner(useResourcePackagesChildren);
         if (resourcePackages != null && !resourcePackages.isEmpty()) {
             reflectiveScanner.setResourcePackages(resourcePackages);
         }

@@ -14,20 +14,36 @@ import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
 
 /**
- * Scan for classes with {@link Path} annotation or {@link OpenAPIDefinition} annotation.
+ * Scan for classes with {@link Path} annotation or {@link OpenAPIDefinition}
+ * annotation.
  */
 class JaxRSScanner {
     private Set<String> resourcePackages = Collections.emptySet();
 
+    private boolean useResourcePackagesChildren;
+
+    public JaxRSScanner(Boolean useResourcePackagesChildren) {
+        this.useResourcePackagesChildren = useResourcePackagesChildren != null && useResourcePackagesChildren;
+    }
+
     Set<Class<?>> classes() {
-        ConfigurationBuilder config = ConfigurationBuilder.build(resourcePackages)
+        ConfigurationBuilder config = ConfigurationBuilder
+                .build(resourcePackages)
                 .setScanners(new ResourcesScanner(), new TypeAnnotationsScanner(), new SubTypesScanner());
         Reflections reflections = new Reflections(config);
-        Stream<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Path.class).stream()
-                .filter(cls -> resourcePackages.isEmpty() || resourcePackages.contains(cls.getPackage().getName()));
-        Stream<Class<?>> defClasses = reflections.getTypesAnnotatedWith(OpenAPIDefinition.class).stream()
-                .filter(cls -> resourcePackages.isEmpty() || resourcePackages.contains(cls.getPackage().getName()));
+        Stream<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Path.class)
+                .stream()
+                .filter(this::filterClassByResourcePackages);
+        Stream<Class<?>> defClasses = reflections.getTypesAnnotatedWith(OpenAPIDefinition.class)
+                .stream()
+                .filter(this::filterClassByResourcePackages);
         return Stream.concat(apiClasses, defClasses).collect(Collectors.toSet());
+    }
+
+    private boolean filterClassByResourcePackages(Class<?> cls) {
+        return resourcePackages.isEmpty()
+                || resourcePackages.contains(cls.getPackage().getName())
+                || (useResourcePackagesChildren && resourcePackages.stream().anyMatch(p -> cls.getPackage().getName().startsWith(p)));
     }
 
     void setResourcePackages(Set<String> resourcePackages) {

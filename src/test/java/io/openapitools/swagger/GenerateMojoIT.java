@@ -107,6 +107,11 @@ public class GenerateMojoIT {
         testGenerate("fullpretty", "open-api", "generate-mojo-full-pretty-pom.xml", true, OutputFormat.JSON, OutputFormat.YAML);
     }
 
+    @Test
+    public void testGenerateRecursive() throws Exception {
+        testGenerate("recursive", "swagger", "generate-mojo-recursive-pom.xml", true, OutputFormat.JSON);
+    }
+
     private static class DeleteVisitor extends SimpleFileVisitor<Path> {
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

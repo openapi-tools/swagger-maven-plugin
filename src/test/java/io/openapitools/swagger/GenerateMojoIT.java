@@ -1,9 +1,5 @@
 package io.openapitools.swagger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.core.util.Json;
-import io.swagger.v3.core.util.Yaml;
-import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,11 +11,18 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.List;
+
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.Yaml;
+import io.swagger.v3.oas.models.OpenAPI;
 
 public class GenerateMojoIT {
 
@@ -39,7 +42,7 @@ public class GenerateMojoIT {
         OpenAPI generatedAPI = mapper.readValue(generated.toFile(), OpenAPI.class);
         
         // OpenAPI.equals() performs a deep equal check of all its properties
-        Assert.assertTrue(expectedAPI.equals(generatedAPI));
+        Assert.assertEquals(expectedAPI, generatedAPI);
     }
 
     /**
@@ -90,6 +93,16 @@ public class GenerateMojoIT {
     @Test
     public void testGenerateDefaults() throws Exception {
         testGenerate("default", "swagger", "generate-mojo-defaults-pom.xml", false, OutputFormat.JSON);
+    }
+
+    @Test
+    public void testGenerateApplicationClass() throws Exception {
+        testGenerate("application", "swagger", "generate-mojo-application.xml", false, OutputFormat.JSON);
+    }
+
+    @Test
+    public void testGenerateApplicationClassByScanning() throws Exception {
+        testGenerate("application", "swagger", "generate-mojo-application-scan.xml", false, OutputFormat.JSON);
     }
 
     @Test

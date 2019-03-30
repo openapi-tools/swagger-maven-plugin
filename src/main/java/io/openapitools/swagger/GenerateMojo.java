@@ -80,9 +80,14 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(defaultValue = "false")
     private boolean attachSwaggerArtifact;
 
+    /**
+     * Specifies the implementation of {@link Application}. If the class is not specified,
+     * the resource packages are scanned for the {@link Application} implementations
+     * automatically.
+     */
     @Parameter(name = "applicationClass", defaultValue = "")
     private String applicationClass;
-    
+
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
 

@@ -19,14 +19,16 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 
 /**
  * Scan for classes with {@link Path} annotation or {@link OpenAPIDefinition}
- * annotation.
+ * annotation, and for {@link Application} instances.
  */
 class JaxRSScanner {
-    private Set<String> resourcePackages = Collections.emptySet();
 
-    private boolean useResourcePackagesChildren;
+    private final Set<String> resourcePackages;
 
-    public JaxRSScanner(Boolean useResourcePackagesChildren) {
+    private final boolean useResourcePackagesChildren;
+
+    public JaxRSScanner(Set<String> resourcePackages, Boolean useResourcePackagesChildren) {
+        this.resourcePackages = resourcePackages == null ? Collections.emptySet() : new HashSet<>(resourcePackages);
         this.useResourcePackagesChildren = useResourcePackagesChildren != null && useResourcePackagesChildren;
     }
 
@@ -61,7 +63,4 @@ class JaxRSScanner {
                 || (useResourcePackagesChildren && resourcePackages.stream().anyMatch(p -> cls.getPackage().getName().startsWith(p)));
     }
 
-    void setResourcePackages(Set<String> resourcePackages) {
-        this.resourcePackages = new HashSet<>(resourcePackages);
-    }
 }

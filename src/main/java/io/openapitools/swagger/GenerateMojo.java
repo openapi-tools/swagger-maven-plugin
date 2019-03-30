@@ -107,10 +107,7 @@ public class GenerateMojo extends AbstractMojo {
 
         Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
-        JaxRSScanner reflectiveScanner = new JaxRSScanner(useResourcePackagesChildren);
-        if (resourcePackages != null && !resourcePackages.isEmpty()) {
-            reflectiveScanner.setResourcePackages(resourcePackages);
-        }
+        JaxRSScanner reflectiveScanner = new JaxRSScanner(resourcePackages, useResourcePackagesChildren);
 
         Application application = resolveApplication(reflectiveScanner);
         reader.setApplication(application);

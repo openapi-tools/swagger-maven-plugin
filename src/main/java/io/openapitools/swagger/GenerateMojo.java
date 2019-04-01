@@ -149,22 +149,25 @@ public class GenerateMojo extends AbstractMojo {
             return instantiateApplication(appClasses.iterator().next());
         }
 
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName(applicationClass, true, Thread.currentThread().getContextClassLoader());
-        } catch (ClassNotFoundException e) {
-            getLog().warn("Cannot load application class: " + applicationClass);
-            return null;
-        }
+        Class<?> clazz = resolveClass(applicationClass);
 
         if (!Application.class.isAssignableFrom(clazz)) {
-            getLog().warn("Provided application does not implement javax.ws.rs.core.Application, skipping");
+            getLog().warn("Provided application class does not implement javax.ws.rs.core.Application, skipping");
             return null;
         }
 
         @SuppressWarnings("unchecked")
         Class<? extends Application> appClazz = (Class<? extends Application>)clazz;
         return instantiateApplication(appClazz);
+    }
+    
+    private Class<?> resolveClass(String className) {
+        try {
+            return Class.forName(applicationClass, true, Thread.currentThread().getContextClassLoader());
+        } catch (ClassNotFoundException e) {
+            getLog().warn("Cannot load class: " + applicationClass);
+            return null;
+        }
     }
 
     private Application instantiateApplication(Class<? extends Application> clazz) {

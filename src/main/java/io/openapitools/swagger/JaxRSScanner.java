@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Application;
 
+import org.apache.maven.plugin.logging.Log;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.scanners.SubTypesScanner;
@@ -23,24 +24,35 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
  */
 class JaxRSScanner {
 
+	private final Log log;
+	
     private final Set<String> resourcePackages;
 
     private final boolean useResourcePackagesChildren;
 
-    public JaxRSScanner(Set<String> resourcePackages, Boolean useResourcePackagesChildren) {
-        this.resourcePackages = resourcePackages == null ? Collections.emptySet() : new HashSet<>(resourcePackages);
+    public JaxRSScanner(Log log, Set<String> resourcePackages, Boolean useResourcePackagesChildren) {
+        this.log = log;
+    	this.resourcePackages = resourcePackages == null ? Collections.emptySet() : new HashSet<>(resourcePackages);
         this.useResourcePackagesChildren = useResourcePackagesChildren != null && useResourcePackagesChildren;
     }
 
-    Set<Class<? extends Application>> applicationClasses() {
+    Application applicationInstance() {
         ConfigurationBuilder config = ConfigurationBuilder
                 .build(resourcePackages)
                 .setScanners(new ResourcesScanner(), new TypeAnnotationsScanner(), new SubTypesScanner());
         Reflections reflections = new Reflections(config);
-        return reflections.getSubTypesOf(Application.class)
+        Set<Class<? extends Application>> applicationClasses = reflections.getSubTypesOf(Application.class)
                 .stream()
                 .filter(this::filterClassByResourcePackages)
                 .collect(Collectors.toSet());
+        if (applicationClasses.isEmpty()) {
+            return null;
+        }
+        if (applicationClasses.size() > 1) {
+        	log.warn("More than one javax.ws.rs.core.Application classes found on the classpath, skipping");
+            return null;
+        }
+        return ClassUtils.createInstance(applicationClasses.iterator().next());
     }
 
     Set<Class<?>> classes() {

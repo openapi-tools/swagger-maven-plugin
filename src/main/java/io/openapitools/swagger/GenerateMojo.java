@@ -112,7 +112,7 @@ public class GenerateMojo extends AbstractMojo {
 
         Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
-        JaxRSScanner reflectiveScanner = new JaxRSScanner(resourcePackages, useResourcePackagesChildren);
+        JaxRSScanner reflectiveScanner = new JaxRSScanner(getLog(), resourcePackages, useResourcePackagesChildren);
 
         Application application = resolveApplication(reflectiveScanner);
         reader.setApplication(application);
@@ -138,47 +138,21 @@ public class GenerateMojo extends AbstractMojo {
 
     private Application resolveApplication(JaxRSScanner reflectiveScanner) {
         if (applicationClass == null || applicationClass.isEmpty()) {
-            Set<Class<? extends Application>> appClasses = reflectiveScanner.applicationClasses();
-            if (appClasses.isEmpty()) {
-                return null;
-            }
-            if (appClasses.size() > 1) {
-                getLog().warn("More than one javax.ws.rs.core.Application classes found on the classpath, skipping");
-                return null;
-            }
-            return instantiateApplication(appClasses.iterator().next());
+            return reflectiveScanner.applicationInstance();
         }
 
-        Class<?> clazz = resolveClass(applicationClass);
+        Class<?> clazz = ClassUtils.loadClass(applicationClass, Thread.currentThread().getContextClassLoader());
 
-        if (!Application.class.isAssignableFrom(clazz)) {
+        if (clazz == null || !Application.class.isAssignableFrom(clazz)) {
             getLog().warn("Provided application class does not implement javax.ws.rs.core.Application, skipping");
             return null;
         }
 
         @SuppressWarnings("unchecked")
         Class<? extends Application> appClazz = (Class<? extends Application>)clazz;
-        return instantiateApplication(appClazz);
+        return ClassUtils.createInstance(appClazz);
     }
     
-    private Class<?> resolveClass(String className) {
-        try {
-            return Class.forName(applicationClass, true, Thread.currentThread().getContextClassLoader());
-        } catch (ClassNotFoundException e) {
-            getLog().warn("Cannot load class: " + applicationClass);
-            return null;
-        }
-    }
-
-    private Application instantiateApplication(Class<? extends Application> clazz) {
-        try {
-            return clazz.getDeclaredConstructor().newInstance();
-        } catch (ReflectiveOperationException | IllegalArgumentException | SecurityException e) {
-            getLog().warn("Cannot instantiate provided application class, skipping");
-            return null;
-        }
-    }
-
     private URLClassLoader createClassLoader() {
         try {
             File compiled = new File(project.getBuild().getOutputDirectory());

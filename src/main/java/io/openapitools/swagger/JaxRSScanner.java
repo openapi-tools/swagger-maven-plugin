@@ -24,15 +24,15 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
  */
 class JaxRSScanner {
 
-	private final Log log;
-	
+    private final Log log;
+
     private final Set<String> resourcePackages;
 
     private final boolean useResourcePackagesChildren;
 
     public JaxRSScanner(Log log, Set<String> resourcePackages, Boolean useResourcePackagesChildren) {
         this.log = log;
-    	this.resourcePackages = resourcePackages == null ? Collections.emptySet() : new HashSet<>(resourcePackages);
+        this.resourcePackages = resourcePackages == null ? Collections.emptySet() : new HashSet<>(resourcePackages);
         this.useResourcePackagesChildren = useResourcePackagesChildren != null && useResourcePackagesChildren;
     }
 
@@ -49,7 +49,7 @@ class JaxRSScanner {
             return null;
         }
         if (applicationClasses.size() > 1) {
-        	log.warn("More than one javax.ws.rs.core.Application classes found on the classpath, skipping");
+            log.warn("More than one javax.ws.rs.core.Application classes found on the classpath, skipping");
             return null;
         }
         return ClassUtils.createInstance(applicationClasses.iterator().next());

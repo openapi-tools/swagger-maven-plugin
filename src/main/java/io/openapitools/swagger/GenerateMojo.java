@@ -1,8 +1,5 @@
 package io.openapitools.swagger;
 
-import io.openapitools.swagger.config.SwaggerConfig;
-import io.swagger.v3.jaxrs2.Reader;
-import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -10,6 +7,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.Set;
+
+import javax.ws.rs.core.Application;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -20,6 +20,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+
+import io.openapitools.swagger.config.SwaggerConfig;
+import io.swagger.v3.jaxrs2.Reader;
+import io.swagger.v3.oas.models.OpenAPI;
 
 /**
  * Maven mojo to generate OpenAPI documentation document based on Swagger.
@@ -45,11 +49,10 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter
     private Set<String> resourcePackages;
 
-    
     /**
      * Recurse into resourcePackages child packages.
      */
-    @Parameter(required=false, defaultValue = "false")
+    @Parameter(required = false, defaultValue = "false")
     private Boolean useResourcePackagesChildren;
     
     /**
@@ -77,6 +80,14 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(defaultValue = "false")
     private boolean attachSwaggerArtifact;
 
+    /**
+     * Specifies the implementation of {@link Application}. If the class is not specified,
+     * the resource packages are scanned for the {@link Application} implementations
+     * automatically.
+     */
+    @Parameter(name = "applicationClass", defaultValue = "")
+    private String applicationClass;
+
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
 
@@ -92,7 +103,7 @@ public class GenerateMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-	if (skip!=null && skip) {
+        if (skip != null && skip) {
             getLog().info("OpenApi generation is skipped.");
             return;
         }
@@ -101,18 +112,16 @@ public class GenerateMojo extends AbstractMojo {
 
         Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
+        JaxRSScanner reflectiveScanner = new JaxRSScanner(getLog(), resourcePackages, useResourcePackagesChildren);
 
-        JaxRSScanner reflectiveScanner = new JaxRSScanner(useResourcePackagesChildren);
-        if (resourcePackages != null && !resourcePackages.isEmpty()) {
-            reflectiveScanner.setResourcePackages(resourcePackages);
-        }
+        Application application = resolveApplication(reflectiveScanner);
+        reader.setApplication(application);
 
         OpenAPI swagger = reader.read(reflectiveScanner.classes());
 
         if (outputDirectory.mkdirs()) {
             getLog().debug("Created output directory " + outputDirectory);
         }
-
 
         outputFormats.forEach(format -> {
             try {
@@ -127,6 +136,23 @@ public class GenerateMojo extends AbstractMojo {
         });
     }
 
+    private Application resolveApplication(JaxRSScanner reflectiveScanner) {
+        if (applicationClass == null || applicationClass.isEmpty()) {
+            return reflectiveScanner.applicationInstance();
+        }
+
+        Class<?> clazz = ClassUtils.loadClass(applicationClass, Thread.currentThread().getContextClassLoader());
+
+        if (clazz == null || !Application.class.isAssignableFrom(clazz)) {
+            getLog().warn("Provided application class does not implement javax.ws.rs.core.Application, skipping");
+            return null;
+        }
+
+        @SuppressWarnings("unchecked")
+        Class<? extends Application> appClazz = (Class<? extends Application>)clazz;
+        return ClassUtils.createInstance(appClazz);
+    }
+    
     private URLClassLoader createClassLoader() {
         try {
             File compiled = new File(project.getBuild().getOutputDirectory());

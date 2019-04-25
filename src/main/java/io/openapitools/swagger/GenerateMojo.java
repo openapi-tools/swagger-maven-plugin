@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -54,7 +58,7 @@ public class GenerateMojo extends AbstractMojo {
      */
     @Parameter(required = false, defaultValue = "false")
     private Boolean useResourcePackagesChildren;
-    
+
     /**
      * Directory to contain generated documentation.
      */
@@ -152,14 +156,34 @@ public class GenerateMojo extends AbstractMojo {
         Class<? extends Application> appClazz = (Class<? extends Application>)clazz;
         return ClassUtils.createInstance(appClazz);
     }
-    
+
     private URLClassLoader createClassLoader() {
         try {
-            File compiled = new File(project.getBuild().getOutputDirectory());
-            return new URLClassLoader(new URL[] {compiled.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
+            Collection<String> dependencies = getDependentClasspathElements();
+            URL[] urls = new URL[dependencies.size()];
+            int index = 0;
+            for (String dependency : dependencies) {
+                urls[index++] = Paths.get(dependency).toUri().toURL();
+            }
+            return new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
         } catch (MalformedURLException e) {
             throw new RuntimeException("Unable to create class loader with compiled classes", e);
+        } catch (DependencyResolutionRequiredException e) {
+            throw new RuntimeException("Dependency resolution (runtime + compile) is required");
         }
+    }
+
+    private Collection<String> getDependentClasspathElements() throws DependencyResolutionRequiredException {
+        Set<String> dependencies = new LinkedHashSet<>();
+        Collection<String> compileClasspathElements = project.getCompileClasspathElements();
+        if (compileClasspathElements != null) {
+            dependencies.addAll(compileClasspathElements);
+        }
+        Collection<String> runtimeClasspathElements = project.getRuntimeClasspathElements();
+        if (runtimeClasspathElements != null) {
+            dependencies.addAll(runtimeClasspathElements);
+        }
+        return dependencies;
     }
 
 }

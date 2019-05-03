@@ -175,6 +175,7 @@ public class GenerateMojo extends AbstractMojo {
 
     private Collection<String> getDependentClasspathElements() throws DependencyResolutionRequiredException {
         Set<String> dependencies = new LinkedHashSet<>();
+        dependencies.add(project.getBuild().getOutputDirectory());
         Collection<String> compileClasspathElements = project.getCompileClasspathElements();
         if (compileClasspathElements != null) {
             dependencies.addAll(compileClasspathElements);

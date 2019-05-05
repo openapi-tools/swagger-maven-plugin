@@ -41,7 +41,6 @@
                     <outputFilename>swagger</outputFilename>
                     <outputFormats>JSON,YAML</outputFormats>
                     <prettyPrint>true</prettyPrint>
-                    <useResourcePackagesChildren>true</useResourcePackagesChildren>
                 </configuration>
                 <executions>
                     <execution>

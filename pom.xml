@@ -269,6 +269,8 @@
                             <execution>
                                 <id>integration-test</id>
                                 <goals>
+                                    <!-- install current plugin version into the IT repository first -->
+                                    <goal>install</goal>
                                     <goal>run</goal>
                                 </goals>
                             </execution>
@@ -292,7 +294,6 @@
                                 <goal>package</goal>
                             </goals>
                         </configuration>
-
                     </plugin>
                 </plugins>
             </build>

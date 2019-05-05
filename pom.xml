@@ -69,7 +69,6 @@
         <groovy.version>1.8.0</groovy.version>
         <groovy.eclipse.compiler.version>2.7.0-01</groovy.eclipse.compiler.version>
         <groovy-eclipse-batch.version>2.0.4-04</groovy-eclipse-batch.version>
-        <openjpa.version>2.4.2</openjpa.version>
     </properties>
 
     <dependencies>
@@ -317,11 +316,6 @@
                     <artifactId>groovy-all</artifactId>
                     <version>${groovy.version}</version>
                     <scope>test</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.openjpa</groupId>
-                    <artifactId>openjpa</artifactId>
-                    <version>${openjpa.version}</version>
                 </dependency>
             </dependencies>
         </profile>

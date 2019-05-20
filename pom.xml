@@ -51,7 +51,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <com.fasterxml.jackson.core.version>2.9.8</com.fasterxml.jackson.core.version>
+        <com.fasterxml.jackson.core.version>2.9.9</com.fasterxml.jackson.core.version>
         <com.google.guava.version>27.0.1-jre</com.google.guava.version>
         <io.swagger.core.v3.version>2.0.6</io.swagger.core.v3.version>
         <junit.version>4.12</junit.version>

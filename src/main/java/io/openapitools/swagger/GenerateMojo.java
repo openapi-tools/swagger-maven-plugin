@@ -132,7 +132,7 @@ public class GenerateMojo extends AbstractMojo {
                 File outputFile = new File(outputDirectory, outputFilename + "." + format.name().toLowerCase());
                 format.write(swagger, outputFile, prettyPrint);
                 if (attachSwaggerArtifact) {
-                    projectHelper.attachArtifact(project, format.name().toLowerCase(), "swagger", outputFile);
+                    projectHelper.attachArtifact(project, format.name().toLowerCase(), outputFilename, outputFile);
                 }
             } catch (IOException e) {
                 throw new RuntimeException("Unable write " + outputFilename + " document", e);

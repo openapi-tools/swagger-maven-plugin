@@ -51,18 +51,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <com.fasterxml.jackson.core.version>2.10.0.pr3</com.fasterxml.jackson.core.version>
-        <com.google.guava.version>27.0.1-jre</com.google.guava.version>
-        <io.swagger.core.v3.version>2.0.6</io.swagger.core.v3.version>
-        <junit.version>4.12</junit.version>
-        <org.mockito.version>2.11.0</org.mockito.version>
-        <org.slf4j.version>1.7.25</org.slf4j.version>
-        <org.apache.maven.maven-plugin-annotations.version>3.5</org.apache.maven.maven-plugin-annotations.version>
-        <org.apache.maven.version>3.6.0</org.apache.maven.version>
+        <com.fasterxml.jackson.core.version>2.10.1</com.fasterxml.jackson.core.version>
+        <com.google.guava.version>28.1-jre</com.google.guava.version>
         <io.openapitools.jackson.dataformat.version>1.0.4</io.openapitools.jackson.dataformat.version>
-        <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>
+        <io.swagger.core.v3.version>2.1.0</io.swagger.core.v3.version>
         <javax.xml.bin.jaxb-api.version>2.3.0</javax.xml.bin.jaxb-api.version>
         <javax.ws.rs.version>2.1</javax.ws.rs.version>
+        <junit.version>4.12</junit.version>
+        <org.apache.maven.maven-plugin-annotations.version>3.5</org.apache.maven.maven-plugin-annotations.version>
+        <org.apache.maven.version>3.6.0</org.apache.maven.version>
+        <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>
+        <org.mockito.version>3.2.0</org.mockito.version>
+        <org.reflections.version>0.9.11</org.reflections.version>
+        <org.slf4j.version>1.7.29</org.slf4j.version>
     </properties>
 
     <dependencies>
@@ -100,6 +101,11 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-artifact</artifactId>
             <version>${org.apache.maven.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${org.reflections.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    
+
     <name>Swagger Maven Plugin</name>
     <groupId>io.openapitools.swagger</groupId>
     <version>2.1.3-SNAPSHOT</version>
@@ -14,8 +16,8 @@
 
     <licenses>
         <license>
-          <name>MIT License</name>
-          <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
 
@@ -28,12 +30,11 @@
         </developer>
     </developers>
 
-
     <scm>
         <connection>scm:git:https://github.com/openapi-tools/swagger-maven-plugin.git</connection>
         <developerConnection>scm:git:https://github.com/openapi-tools/swagger-maven-plugin.git</developerConnection>
         <url>https://github.com/openapi-tools/swagger-maven-plugin/tree/master</url>
-      <tag>HEAD</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
@@ -53,6 +54,9 @@
 
         <com.fasterxml.jackson.core.version>2.10.1</com.fasterxml.jackson.core.version>
         <com.google.guava.version>28.1-jre</com.google.guava.version>
+        <groovy.version>1.8.0</groovy.version>
+        <groovy.eclipse.compiler.version>2.7.0-01</groovy.eclipse.compiler.version>
+        <groovy-eclipse-batch.version>2.0.4-04</groovy-eclipse-batch.version>
         <io.openapitools.jackson.dataformat.version>1.0.4</io.openapitools.jackson.dataformat.version>
         <io.swagger.core.v3.version>2.1.0</io.swagger.core.v3.version>
         <javax.xml.bin.jaxb-api.version>2.3.0</javax.xml.bin.jaxb-api.version>
@@ -235,7 +239,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
-                  <source>1.8</source>
+                    <source>1.8</source>
                 </configuration>
                 <executions>
                     <execution>
@@ -256,5 +260,71 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>run-its</id>
+            <build>
+                <defaultGoal>verify</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-invoker-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <goals>
+                                    <!-- install current plugin version into the IT repository first -->
+                                    <goal>install</goal>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <projectsDirectory>src/it</projectsDirectory>
+                            <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                            <pomIncludes>
+                                <pomInclude>*/pom.xml</pomInclude>
+                            </pomIncludes>
+                            <postBuildHookScript>verify</postBuildHookScript>
+                            <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                            <settingsFile>src/it/settings.xml</settingsFile>
+                            <showErrors>true</showErrors>
+                            <streamLogs>false</streamLogs>
+                            <properties>
+                                <https.protocols>${https.protocols}</https.protocols>
+                            </properties>
+                            <goals>
+                                <goal>clean</goal>
+                                <goal>package</goal>
+                            </goals>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-eclipse-compiler</artifactId>
+                    <version>${groovy.eclipse.compiler.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-eclipse-batch</artifactId>
+                    <version>${groovy-eclipse-batch.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                    <version>${groovy.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>

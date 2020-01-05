@@ -1,0 +1,25 @@
+{
+  "openapi" : "3.0.1",
+  "paths" : {
+    "/hello/get" : {
+      "get" : {
+        "operationId" : "get",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

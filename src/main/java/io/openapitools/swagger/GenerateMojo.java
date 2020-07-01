@@ -1,18 +1,9 @@
 package io.openapitools.swagger;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.ws.rs.core.Application;
-
+import io.openapitools.swagger.config.SwaggerConfig;
+import io.swagger.v3.jaxrs2.Reader;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -25,9 +16,20 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 
-import io.openapitools.swagger.config.SwaggerConfig;
-import io.swagger.v3.jaxrs2.Reader;
-import io.swagger.v3.oas.models.OpenAPI;
+import javax.ws.rs.core.Application;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Maven mojo to generate OpenAPI documentation document based on Swagger.
@@ -114,7 +116,7 @@ public class GenerateMojo extends AbstractMojo {
 
         ClassLoader origClzLoader = Thread.currentThread().getContextClassLoader();
         ClassLoader clzLoader = createClassLoader(origClzLoader);
-        
+
         try {
             // set the TCCL before everything else
             Thread.currentThread().setContextClassLoader(clzLoader);
@@ -127,6 +129,8 @@ public class GenerateMojo extends AbstractMojo {
             reader.setApplication(application);
 
             OpenAPI swagger = reader.read(reflectiveScanner.classes());
+            sortPaths(swagger);
+            sortComponents(swagger);
 
             if (outputDirectory.mkdirs()) {
                 getLog().debug("Created output directory " + outputDirectory);
@@ -196,4 +200,37 @@ public class GenerateMojo extends AbstractMojo {
         return dependencies;
     }
 
+    private <T> void sortMap(Map<String, T> map) {
+        if (map == null) {
+            return;
+        }
+
+        Map<String, T> sortedMapItems = map.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (item1, item2) -> item2, TreeMap::new));
+        map.clear();
+        map.putAll(sortedMapItems);
+    }
+
+    private void sortPaths(OpenAPI swagger) {
+        sortMap(swagger.getPaths());
+    }
+
+    private void sortComponents(OpenAPI swagger) {
+        final Components components = swagger.getComponents();
+        if (components == null) {
+            return;
+        }
+
+        sortMap(components.getSchemas());
+        sortMap(components.getResponses());
+        sortMap(components.getParameters());
+        sortMap(components.getExamples());
+        sortMap(components.getRequestBodies());
+        sortMap(components.getHeaders());
+        sortMap(components.getSecuritySchemes());
+        sortMap(components.getLinks());
+        sortMap(components.getCallbacks());
+        sortMap(components.getExtensions());
+    }
 }

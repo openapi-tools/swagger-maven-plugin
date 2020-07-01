@@ -1,5 +1,13 @@
 openapi: 3.0.1
 paths:
+  /accounts:
+    get:
+      operationId: list
+      responses:
+        default:
+          description: default response
+          content:
+            application/hal+json: {}
   /accounts/{regNo}-{accountNo}:
     get:
       description: Get single account
@@ -16,7 +24,7 @@ paths:
         schema:
           type: string
       responses:
-        404:
+        "404":
           description: No account found.
     put:
       description: Create new or update existing account
@@ -38,16 +46,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AccountUpdateRepresentation'
       responses:
-        404:
+        "404":
           description: No updating possible
-  /accounts:
-    get:
-      operationId: list
-      responses:
-        default:
-          description: default response
-          content:
-            application/hal+json: {}
 components:
   schemas:
     AccountUpdateRepresentation:

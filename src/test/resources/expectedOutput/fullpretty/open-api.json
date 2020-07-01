@@ -21,6 +21,19 @@
     "description" : "Example URL"
   } ],
   "paths" : {
+    "/accounts" : {
+      "get" : {
+        "operationId" : "list",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/hal+json" : { }
+            }
+          }
+        }
+      }
+    },
     "/accounts/{regNo}-{accountNo}" : {
       "get" : {
         "description" : "Get single account",
@@ -76,19 +89,6 @@
         "responses" : {
           "404" : {
             "description" : "No updating possible"
-          }
-        }
-      }
-    },
-    "/accounts" : {
-      "get" : {
-        "operationId" : "list",
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/hal+json" : { }
-            }
           }
         }
       }

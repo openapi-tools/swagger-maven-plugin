@@ -4,6 +4,7 @@ import io.openapitools.swagger.config.SwaggerConfig;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -222,7 +223,7 @@ public class GenerateMojo extends AbstractMojo {
             return;
         }
 
-        sortMap(components.getSchemas());
+        sortSchemas(components);
         sortMap(components.getResponses());
         sortMap(components.getParameters());
         sortMap(components.getExamples());
@@ -232,5 +233,17 @@ public class GenerateMojo extends AbstractMojo {
         sortMap(components.getLinks());
         sortMap(components.getCallbacks());
         sortMap(components.getExtensions());
+    }
+
+    private void sortSchemas(Components components) {
+        Map<String, Schema> schemas = components.getSchemas();
+        if (schemas == null) {
+            return;
+        }
+
+        sortMap(schemas);
+        for (Schema<?> schema : schemas.values()) {
+            sortMap(schema.getProperties());
+        }
     }
 }

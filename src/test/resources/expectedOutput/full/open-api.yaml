@@ -19,6 +19,14 @@ servers:
 - url: https://services.example.it/base/path
   description: Example URL
 paths:
+  /accounts:
+    get:
+      operationId: list
+      responses:
+        default:
+          description: default response
+          content:
+            application/hal+json: {}
   /accounts/{regNo}-{accountNo}:
     get:
       description: Get single account
@@ -35,7 +43,7 @@ paths:
         schema:
           type: string
       responses:
-        404:
+        "404":
           description: No account found.
     put:
       description: Create new or update existing account
@@ -57,16 +65,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AccountUpdateRepresentation'
       responses:
-        404:
+        "404":
           description: No updating possible
-  /accounts:
-    get:
-      operationId: list
-      responses:
-        default:
-          description: default response
-          content:
-            application/hal+json: {}
 components:
   schemas:
     AccountUpdateRepresentation:
@@ -74,12 +74,12 @@ components:
       - name
       type: object
       properties:
-        regNo:
-          pattern: ^[0-9]{4}$
-          type: string
         accountNo:
           pattern: ^[0-9]+$
           type: string
         name:
           pattern: .{1,40}
+          type: string
+        regNo:
+          pattern: ^[0-9]{4}$
           type: string

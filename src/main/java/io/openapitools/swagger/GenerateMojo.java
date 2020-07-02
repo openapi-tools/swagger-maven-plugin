@@ -130,8 +130,8 @@ public class GenerateMojo extends AbstractMojo {
             reader.setApplication(application);
 
             OpenAPI swagger = reader.read(reflectiveScanner.classes());
-            sortPaths(swagger);
-            sortComponents(swagger);
+            sortPaths(swagger.getPaths());
+            sortComponents(swagger.getComponents());
 
             if (outputDirectory.mkdirs()) {
                 getLog().debug("Created output directory " + outputDirectory);
@@ -213,17 +213,16 @@ public class GenerateMojo extends AbstractMojo {
         map.putAll(sortedMapItems);
     }
 
-    private void sortPaths(OpenAPI swagger) {
-        sortMap(swagger.getPaths());
+    private void sortPaths(io.swagger.v3.oas.models.Paths paths) {
+        sortMap(paths);
     }
 
-    private void sortComponents(OpenAPI swagger) {
-        final Components components = swagger.getComponents();
+    private void sortComponents(Components components) {
         if (components == null) {
             return;
         }
 
-        sortSchemas(components);
+        sortSchemas(components.getSchemas());
         sortMap(components.getResponses());
         sortMap(components.getParameters());
         sortMap(components.getExamples());
@@ -235,15 +234,14 @@ public class GenerateMojo extends AbstractMojo {
         sortMap(components.getExtensions());
     }
 
-    private void sortSchemas(Components components) {
-        Map<String, Schema> schemas = components.getSchemas();
+    private void sortSchemas(Map<String, Schema> schemas) {
         if (schemas == null) {
             return;
         }
 
         sortMap(schemas);
         for (Schema<?> schema : schemas.values()) {
-            sortMap(schema.getProperties());
+            sortSchemas(schema.getProperties());
         }
     }
 }

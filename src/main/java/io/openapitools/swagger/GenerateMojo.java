@@ -1,10 +1,20 @@
 package io.openapitools.swagger;
 
+import javax.ws.rs.core.Application;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import io.openapitools.swagger.config.SwaggerConfig;
 import io.swagger.v3.jaxrs2.Reader;
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.Schema;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -16,21 +26,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-
-import javax.ws.rs.core.Application;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 /**
  * Maven mojo to generate OpenAPI documentation document based on Swagger.
@@ -129,8 +124,7 @@ public class GenerateMojo extends AbstractMojo {
             Application application = resolveApplication(reflectiveScanner);
             reader.setApplication(application);
 
-            OpenAPI swagger = reader.read(reflectiveScanner.classes());
-            new OpenAPISorter().sort(swagger);
+            OpenAPI swagger = OpenAPISorter.sort(reader.read(reflectiveScanner.classes()));
 
             if (outputDirectory.mkdirs()) {
                 getLog().debug("Created output directory " + outputDirectory);

@@ -1,14 +1,14 @@
 package io.openapitools.swagger;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.Schema;
-
-import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.Schema;
 
 /**
  * Sorter for the contents of an OpenAPI specification.
@@ -28,70 +28,75 @@ import java.util.stream.Collectors;
  */
 public class OpenAPISorter {
 
+    private OpenAPISorter() {
+        // No instances
+    }
+
     /**
      * Sort all the paths and components of the OpenAPI specification, in place.
+     * @param swagger OpenAPI specification to apply sorting to
+     * @return the sorted version of the specification
      */
-    public void sort(OpenAPI swagger) {
-        sortPaths(swagger.getPaths());
+    public static OpenAPI sort(OpenAPI swagger) {
+        swagger.setPaths(sortPaths(swagger.getPaths()));
         sortComponents(swagger.getComponents());
+        return swagger;
     }
 
     /**
      * Sort all the elements of Paths.
      */
-    private void sortPaths(io.swagger.v3.oas.models.Paths paths) {
-        sortMap(paths);
+    private static Paths sortPaths(Paths paths) {
+        TreeMap<String, PathItem> sorted = new TreeMap<>(paths);
+        paths.clear();
+        paths.putAll(sorted);
+        return paths;
     }
 
     /**
      * Sort all the elements of Components.
      */
-    private void sortComponents(Components components) {
+    private static void sortComponents(Components components) {
         if (components == null) {
             return;
         }
 
         sortSchemas(components.getSchemas());
-        sortMap(components.getResponses());
-        sortMap(components.getParameters());
-        sortMap(components.getExamples());
-        sortMap(components.getRequestBodies());
-        sortMap(components.getHeaders());
-        sortMap(components.getSecuritySchemes());
-        sortMap(components.getLinks());
-        sortMap(components.getCallbacks());
-        sortMap(components.getExtensions());
+
+        components.setResponses(createSorted(components.getResponses()));
+        components.setParameters(createSorted(components.getParameters()));
+        components.setExamples(createSorted(components.getExamples()));
+        components.setRequestBodies(createSorted(components.getRequestBodies()));
+        components.setHeaders(createSorted(components.getHeaders()));
+        components.setSecuritySchemes(createSorted(components.getSecuritySchemes()));
+        components.setLinks(createSorted(components.getLinks()));
+        components.setCallbacks(createSorted(components.getCallbacks()));
+        components.setExtensions(createSorted(components.getExtensions()));
     }
 
     /**
      * Recursively sort all the schemas in the Map.
      */
-    private void sortSchemas(Map<String, Schema> schemas) {
+    private static SortedMap<String, Schema> sortSchemas(Map<String, Schema> schemas) {
         if (schemas == null) {
-            return;
+            return null;
         }
 
-        sortMap(schemas);
-        for (Schema<?> schema : schemas.values()) {
-            sortSchemas(schema.getProperties());
-        }
+        TreeMap<String, Schema> sorted = new TreeMap<>();
+        schemas.entrySet().forEach(entry -> {
+            Schema<?> schema = entry.getValue();
+            schema.setProperties(sortSchemas(schema.getProperties()));
+            sorted.put(entry.getKey(), schema);
+        });
+
+        return sorted;
     }
 
     /**
-     * Sort a map by its natural Key order. This method assumes that the Map
-     * will store its entries in insertion order (HashMap, LinkedHashMap, etc.).
-     * <p>
-     * This will not work for a SortedMap which has an inherent ordering (TreeMap, etc.).
+     * Created sorted map based on natural key order.
      */
-    private <T> void sortMap(Map<String, T> map) {
-        if (map == null) {
-            return;
-        }
-
-        Map<String, T> sortedMapItems = map.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (item1, item2) -> item2, TreeMap::new));
-        map.clear();
-        map.putAll(sortedMapItems);
+    private static <T> SortedMap<String, T> createSorted(Map<String, T> map) {
+        return map == null ? null : new TreeMap<>(map);
     }
+
 }

@@ -61,7 +61,7 @@ public class OpenAPISorter {
             return;
         }
 
-        sortSchemas(components.getSchemas());
+        components.setSchemas(sortSchemas(components.getSchemas()));
 
         components.setResponses(createSorted(components.getResponses()));
         components.setParameters(createSorted(components.getParameters()));

@@ -22,12 +22,17 @@ public class OpenApiSorterTest {
 
     @Test
     public void testSort() {
-        ObjectSchema schema = new ObjectSchema();
-        schema.addProperties("s2", new StringSchema());
-        schema.addProperties("s1", new StringSchema());
+        ObjectSchema schema1 = new ObjectSchema();
+        schema1.addProperties("s1-2", new StringSchema());
+        schema1.addProperties("s1-1", new StringSchema());
+
+        ObjectSchema schema2 = new ObjectSchema();
+        schema2.addProperties("s2-2", new StringSchema());
+        schema2.addProperties("s2-1", new StringSchema());
 
         Components components = new Components()
-                .addSchemas("s1", schema)
+                .addSchemas("s2", schema2)
+                .addSchemas("s1", schema1)
                 .addResponses("k2", new ApiResponse())
                 .addResponses("k1", new ApiResponse())
                 .addParameters("k2", new Parameter())
@@ -55,9 +60,13 @@ public class OpenApiSorterTest {
 
         api = OpenAPISorter.sort(api);
 
-        assertEquals("s1", api.getComponents().getSchemas()
+        assertEquals("s1-1", api.getComponents().getSchemas()
                 .values().stream()
-                .findAny().get().getProperties()
+                .findFirst().get().getProperties()
+                .keySet().stream().findFirst().get());
+        assertEquals("s2-1", api.getComponents().getSchemas()
+                .values().stream()
+                .skip(1).findFirst().get().getProperties()
                 .keySet().stream().findFirst().get());
         assertEquals("k1", api.getComponents().getResponses().keySet().stream().findFirst().get());
         assertEquals("k1", api.getComponents().getParameters().keySet().stream().findFirst().get());

@@ -1,7 +1,6 @@
 package io.openapitools.swagger.config;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -13,7 +12,7 @@ public class SwaggerComponents {
      * Security schemes (under Comtonents)
      */
     @Parameter
-    private List<SwaggerSecurityScheme> securitySchemes = Collections.emptyList();
+    private Map<String,SwaggerSecurityScheme> securitySchemes;
 
     // TODO: implement schemas, responses, ... from
     // https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#componentsObject
@@ -22,7 +21,7 @@ public class SwaggerComponents {
         Components components = new Components();
 
         if (securitySchemes != null && !securitySchemes.isEmpty()) {
-            securitySchemes.forEach(s -> components.addSecuritySchemes(s.getName(), s.createSecuritySchemaModel()));
+            securitySchemes.entrySet().forEach(s -> components.addSecuritySchemes(s.getKey(), s.getValue().createSecuritySchemaModel()));
         }
 
         return components;

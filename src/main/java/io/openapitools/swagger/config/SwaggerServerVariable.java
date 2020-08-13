@@ -11,12 +11,6 @@ import io.swagger.v3.oas.models.servers.ServerVariable;
 public class SwaggerServerVariable {
 
     /**
-     * The server variable name
-     */
-    @Parameter(required = true)
-    private String name;
-
-    /**
      * REQUIRED. The default value to use for substitution, and to send, if an
      * alternate value is not supplied. Unlike the Schema Object's default, this
      * value MUST be provided by the consumer.
@@ -55,10 +49,6 @@ public class SwaggerServerVariable {
         }
 
         return serverVar;
-    }
-
-    public String getName() {
-        return name;
     }
 
 }

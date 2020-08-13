@@ -86,7 +86,7 @@ public class SwaggerFlows {
             flow.setAuthorizationUrl(authorizationUrl);
             flow.setTokenUrl(tokenUrl);
             flow.setRefreshUrl(refreshUrl);
-            if (scopes != null){
+            if (scopes != null && !scopes.isEmpty()){
                 Scopes ss = new Scopes();
                 scopes.entrySet().forEach(s -> ss.addString(s.getKey(), s.getValue()));
                 flow.setScopes(ss);

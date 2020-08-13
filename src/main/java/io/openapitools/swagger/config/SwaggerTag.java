@@ -24,7 +24,7 @@ public class SwaggerTag {
      * Additional external documentation for this tag.
      */
     @Parameter
-    private SwaggerExternalDoc externalDocument;
+    private SwaggerExternalDoc externalDoc;
     
     @Parameter
     private Map<String, Object> extensions;
@@ -35,8 +35,8 @@ public class SwaggerTag {
         tag.setName(name);
         tag.setDescription(description);
 
-        if (externalDocument != null) {
-            tag.setExternalDocs(externalDocument.createExternalDocModel());
+        if (externalDoc != null) {
+            tag.setExternalDocs(externalDoc.createExternalDocModel());
         }
 
         if (extensions != null && !extensions.isEmpty()) {

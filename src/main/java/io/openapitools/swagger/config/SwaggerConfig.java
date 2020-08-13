@@ -72,7 +72,7 @@ public class SwaggerConfig {
      * Additional external documentation.
      */
     @Parameter
-    private SwaggerExternalDoc externalDocumentation;
+    private SwaggerExternalDoc externalDoc;
 
     /**
      * Providing extension attributes to the OpenAPI spec.
@@ -111,8 +111,8 @@ public class SwaggerConfig {
         if (tags != null && !tags.isEmpty()) {
             tags.forEach(t -> spec.addTagsItem(t.createTagModel()));
         }
-        if (externalDocumentation != null) {
-            spec.setExternalDocs(externalDocumentation.createExternalDocModel());
+        if (externalDoc != null) {
+            spec.setExternalDocs(externalDoc.createExternalDocModel());
         }
 
         if (extensions != null && !extensions.isEmpty()) {

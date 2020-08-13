@@ -14,7 +14,7 @@ public class SwaggerSecurityScheme {
      * REQUIRED. The type of the security scheme. Valid values are "apiKey", "http",
      * "oauth2", "openIdConnect".
      */
-    @Parameter(required = true)
+    @Parameter
     private String type;
 
     /**
@@ -70,13 +70,20 @@ public class SwaggerSecurityScheme {
     @Parameter
     private Map<String, Object> extensions;
 
+    @Parameter
+    private String $ref;
+
     public SecurityScheme createSecuritySchemaModel() {
         SecurityScheme securityScheme = new SecurityScheme();
 
-        securityScheme.setType(Type.valueOf(type));
+        if (type != null) {
+            securityScheme.setType(Type.valueOf(type.toUpperCase()));
+        }
         securityScheme.setDescription(description);
         securityScheme.setName(name);
-        securityScheme.setIn(In.valueOf(in));
+        if (in != null) {
+            securityScheme.setIn(In.valueOf(in.toUpperCase()));
+        }
         securityScheme.setScheme(scheme);
         securityScheme.setBearerFormat(bearerFormat);
         if (flows != null) {
@@ -88,11 +95,9 @@ public class SwaggerSecurityScheme {
             securityScheme.setExtensions(extensions);
         }
 
+        // Alternative to setting all above properties: reference to other component
+        securityScheme.set$ref($ref);
+
         return securityScheme;
     }
-
-    public String getName() {
-        return name;
-    }
-
 }

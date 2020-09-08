@@ -1,18 +1,7 @@
 package io.openapitools.swagger;
 
-import javax.ws.rs.core.Application;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import io.openapitools.swagger.config.SwaggerConfig;
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -26,6 +15,18 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+
+import javax.ws.rs.core.Application;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Maven mojo to generate OpenAPI documentation document based on Swagger.
@@ -120,6 +121,9 @@ public class GenerateMojo extends AbstractMojo {
             Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
             JaxRSScanner reflectiveScanner = new JaxRSScanner(getLog(), resourcePackages, useResourcePackagesChildren);
+
+            final ModelConverters modelConverters = ModelConverters.getInstance();
+            reflectiveScanner.generateModelConverters().forEach(modelConverters::addConverter);
 
             Application application = resolveApplication(reflectiveScanner);
             reader.setApplication(application);

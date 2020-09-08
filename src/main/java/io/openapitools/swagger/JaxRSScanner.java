@@ -1,14 +1,7 @@
 package io.openapitools.swagger;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Application;
-
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.apache.maven.plugin.logging.Log;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -16,7 +9,15 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Application;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Scan for classes with {@link Path} annotation or {@link OpenAPIDefinition}
@@ -34,6 +35,19 @@ class JaxRSScanner {
         this.log = log;
         this.resourcePackages = resourcePackages == null ? Collections.emptySet() : new HashSet<>(resourcePackages);
         this.useResourcePackagesChildren = useResourcePackagesChildren != null && useResourcePackagesChildren;
+    }
+
+    Set<? extends ModelConverter> generateModelConverters() {
+        ConfigurationBuilder config = ConfigurationBuilder
+                .build(resourcePackages)
+                .setScanners(new ResourcesScanner(), new TypeAnnotationsScanner(), new SubTypesScanner());
+        Reflections reflections = new Reflections(config);
+
+        return reflections.getSubTypesOf(ModelConverter.class).stream()
+                .filter(this::filterClassByResourcePackages)
+                .map(this::generateModelConverterInstance)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     Application applicationInstance() {
@@ -73,6 +87,15 @@ class JaxRSScanner {
         return resourcePackages.isEmpty()
                 || resourcePackages.contains(cls.getPackage().getName())
                 || (useResourcePackagesChildren && resourcePackages.stream().anyMatch(p -> cls.getPackage().getName().startsWith(p)));
+    }
+
+    private <T extends ModelConverter> T generateModelConverterInstance(Class<T> converter) {
+        try {
+            return converter.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException nsme) {
+            log.error(String.format("Model converter %s should have a no-arg constructor. Will not skip registration of model converter.", converter.getName()), nsme);
+            return null;
+        }
     }
 
 }

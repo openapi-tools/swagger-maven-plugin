@@ -19,6 +19,29 @@
         }
       }
     },
+    "/api/accounts/get" : {
+      "get" : {
+        "operationId" : "convert",
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "type" : "string",
+                "format" : "date"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
     "/api/accounts/{regNo}-{accountNo}" : {
       "get" : {
         "description" : "Get single account",

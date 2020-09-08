@@ -1,6 +1,7 @@
 package io.openapitools.swagger.example;
 
 import io.openapitools.swagger.example.model.AccountUpdateRepresentation;
+import io.openapitools.swagger.example.model.ConversionParameter;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -59,6 +60,12 @@ public class AccountServiceExposure {
                                    @PathParam("accountNo") @Pattern(regexp = "^[0-9]+$") String accountNo,
                                    @Valid AccountUpdateRepresentation account,
                                    @Context UriInfo uriInfo, @Context Request request) {
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("get")
+    public Response convert(ConversionParameter parameter) {
         return Response.ok().build();
     }
 

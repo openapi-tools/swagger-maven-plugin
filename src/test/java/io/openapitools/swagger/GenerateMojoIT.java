@@ -28,13 +28,13 @@ public class GenerateMojoIT {
     public MojoRule rule = new MojoRule();
 
     private void assertJsonEquals(Path expectedJson, Path generatedJson) throws IOException {
-        assertOpenApiEquals(Json.mapper(), expectedJson, generatedJson);
         assertFileContentEquals(expectedJson, generatedJson);
+        assertOpenApiEquals(Json.mapper(), expectedJson, generatedJson);
     }
 
     private void assertYamlEquals(Path expectedYaml, Path generatedYaml) throws IOException {
-        assertOpenApiEquals(Yaml.mapper(), expectedYaml, generatedYaml);
         assertFileContentEquals(expectedYaml, generatedYaml);
+        assertOpenApiEquals(Yaml.mapper(), expectedYaml, generatedYaml);
     }
 
     private void assertFileContentEquals(Path expected, Path generated) {

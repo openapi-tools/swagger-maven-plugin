@@ -8,6 +8,19 @@ paths:
           description: default response
           content:
             application/hal+json: {}
+  /accounts/get:
+    get:
+      operationId: convert
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ConversionParameter'
+      responses:
+        default:
+          description: default response
+          content:
+            '*/*': {}
   /accounts/{regNo}-{accountNo}:
     get:
       description: Get single account
@@ -63,4 +76,11 @@ components:
           type: string
         regNo:
           pattern: ^[0-9]{4}$
+          type: string
+    ConversionParameter:
+      type: object
+      properties:
+        date:
+          type: string
+        format:
           type: string

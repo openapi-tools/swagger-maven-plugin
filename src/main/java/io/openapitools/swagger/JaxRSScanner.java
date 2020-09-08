@@ -93,7 +93,7 @@ class JaxRSScanner {
         try {
             return converter.getDeclaredConstructor().newInstance();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException nsme) {
-            log.error(String.format("Model converter %s should have a no-arg constructor. Will not skip registration of model converter.", converter.getName()), nsme);
+            log.error(String.format("Model converter %s should have a no-arg constructor. Will not register the model converter.", converter.getName()), nsme);
             return null;
         }
     }

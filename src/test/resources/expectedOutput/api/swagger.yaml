@@ -11,11 +11,11 @@ paths:
   /accounts/get:
     get:
       operationId: convert
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/ConversionParameter'
+      parameters:
+      - name: parameter
+        in: query
+        schema:
+          $ref: '#/components/schemas/ConversionParameter'
       responses:
         default:
           description: default response

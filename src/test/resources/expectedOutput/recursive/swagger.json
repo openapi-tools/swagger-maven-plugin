@@ -22,16 +22,14 @@
     "/api/accounts/get" : {
       "get" : {
         "operationId" : "convert",
-        "requestBody" : {
-          "content" : {
-            "*/*" : {
-              "schema" : {
-                "type" : "string",
-                "format" : "date"
-              }
-            }
+        "parameters" : [ {
+          "name" : "parameter",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
           }
-        },
+        } ],
         "responses" : {
           "default" : {
             "description" : "default response",

@@ -1,24 +1,10 @@
 openapi: 3.0.1
 info:
-  title: Title
-  description: |-
-    # Description
-
-    This is some description to be included.
-  termsOfService: Terms
-  contact:
-    name: My Name
-    url: https://google.com
-    email: e@mail.com
-  license:
-    name: MIT
-    url: https://license
+  title: My Title
+  description: Description from ReaderListener
   version: 1.0.0
-servers:
-- url: https://services.example.it/base/path
-  description: Example URL
 paths:
-  /accounts:
+  /api/accounts:
     get:
       operationId: list
       responses:
@@ -26,20 +12,21 @@ paths:
           description: default response
           content:
             application/hal+json: {}
-  /accounts/get:
+  /api/accounts/get:
     get:
       operationId: convert
       parameters:
       - name: parameter
         in: query
         schema:
-          $ref: '#/components/schemas/ConversionParameter'
+          type: string
+          format: date
       responses:
         default:
           description: default response
           content:
             '*/*': {}
-  /accounts/{regNo}-{accountNo}:
+  /api/accounts/{regNo}-{accountNo}:
     get:
       description: Get single account
       operationId: get
@@ -79,6 +66,14 @@ paths:
       responses:
         "404":
           description: No updating possible
+  /api/alternate:
+    get:
+      operationId: list_1
+      responses:
+        default:
+          description: default response
+          content:
+            '*/*': {}
 components:
   schemas:
     AccountUpdateRepresentation:
@@ -94,11 +89,4 @@ components:
           type: string
         regNo:
           pattern: ^[0-9]{4}$
-          type: string
-    ConversionParameter:
-      type: object
-      properties:
-        date:
-          type: string
-        format:
           type: string

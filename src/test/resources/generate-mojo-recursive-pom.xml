@@ -20,6 +20,10 @@
                     </resourcePackages>
                     <outputDirectory>target/recursive</outputDirectory>
                     <useResourcePackagesChildren>true</useResourcePackagesChildren>
+                    <outputFormats>
+                        <outputFormat>JSON</outputFormat>
+                        <outputFormat>YAML</outputFormat>
+                    </outputFormats>
 
                     <project implementation="io.openapitools.swagger.MavenProjectStub"/>
                 </configuration>

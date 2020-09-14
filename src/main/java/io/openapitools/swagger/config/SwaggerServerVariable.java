@@ -50,9 +50,27 @@ public class SwaggerServerVariable {
         return serverVar;
     }
 
-    @JsonPropertyOrder({"description", "default", "enum"})
+    @JsonPropertyOrder({"description", "default", "enum", "extensions"})
     public static class ServerVariable extends io.swagger.v3.oas.models.servers.ServerVariable {
+        @Override
+        public List<String> getEnum() {
+            return super.getEnum();
+        }
 
+        @Override
+        public String getDefault() {
+            return super.getDefault();
+        }
+
+        @Override
+        public String getDescription() {
+            return super.getDescription();
+        }
+
+        @Override
+        public Map<String, Object> getExtensions() {
+            return super.getExtensions();
+        }
     }
 
 }

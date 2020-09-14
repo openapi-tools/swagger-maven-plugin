@@ -25,10 +25,7 @@ public class SwaggerSecurityRequirement {
         }
 
         SecurityRequirement securityReq = new SecurityRequirement();
-        for (Entry entry : entries) {
-            securityReq.addList(entry.name, entry.list);
-        }
-
+        entries.forEach(e -> securityReq.addList(e.name, e.list));
         return securityReq;
     }
 

@@ -56,7 +56,7 @@ public class SwaggerConfig {
      * authorize a request. Individual operations can override this definition.
      */
     @Parameter
-    private List<SwaggerSecurityRequirement> securityRequirements;
+    private List<SwaggerSecurityRequirement> securityRequirements = Collections.emptyList();;
 
     /**
      * A list of tags used by the specification with additional metadata. The order
@@ -66,7 +66,7 @@ public class SwaggerConfig {
      * Each tag name in the list MUST be unique.
      */
     @Parameter
-    private List<SwaggerTag> tags;
+    private List<SwaggerTag> tags = Collections.emptyList();;
 
     /**
      * Additional external documentation.
@@ -78,7 +78,7 @@ public class SwaggerConfig {
      * Providing extension attributes to the OpenAPI spec.
      */
     @Parameter
-    private Map<String, Object> extensions;
+    private Map<String, Object> extensions = Collections.emptyMap();
 
     public OpenAPI createSwaggerModel() {
         OpenAPI spec = new OpenAPI();
@@ -99,25 +99,18 @@ public class SwaggerConfig {
             }
         }
 
-        if (servers != null && !servers.isEmpty()) {
-            servers.forEach(s -> spec.addServersItem(s.createServerModel()));
-        }
         if (components != null) {
             spec.setComponents(components.createComponentsModel());
         }
-        if (securityRequirements != null) {
-            securityRequirements.forEach(s -> spec.addSecurityItem(s.createSecurityModel()));
-        }
-        if (tags != null && !tags.isEmpty()) {
-            tags.forEach(t -> spec.addTagsItem(t.createTagModel()));
-        }
+
         if (externalDoc != null) {
             spec.setExternalDocs(externalDoc.createExternalDocModel());
         }
 
-        if (extensions != null && !extensions.isEmpty()) {
-            spec.setExtensions(extensions);
-        }
+        spec.setExtensions(extensions);
+        servers.forEach(s -> spec.addServersItem(s.createServerModel()));
+        securityRequirements.forEach(s -> spec.addSecurityItem(s.createSecurityModel()));
+        tags.forEach(t -> spec.addTagsItem(t.createTagModel()));
 
         return spec;
     }

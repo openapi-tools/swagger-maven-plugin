@@ -2,6 +2,7 @@ package io.openapitools.swagger.config;
 
 import io.swagger.v3.oas.models.info.Contact;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.maven.plugins.annotations.Parameter;
@@ -30,7 +31,7 @@ public class SwaggerContact {
     private String email;
 
     @Parameter
-    private Map<String, Object> extensions;
+    private Map<String, Object> extensions = Collections.emptyMap();
 
     public Contact createContactModel() {
         Contact contact = new Contact();
@@ -47,9 +48,7 @@ public class SwaggerContact {
             contact.setEmail(email);
         }
 
-        if (extensions != null && !extensions.isEmpty()) {
-            contact.setExtensions(extensions);
-        }
+        contact.setExtensions(extensions);
 
         return contact;
     }

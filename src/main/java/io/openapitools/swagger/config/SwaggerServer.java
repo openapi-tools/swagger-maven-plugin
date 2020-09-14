@@ -3,6 +3,7 @@ package io.openapitools.swagger.config;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.servers.ServerVariables;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.maven.plugins.annotations.Parameter;
@@ -30,10 +31,10 @@ public class SwaggerServer {
      * substitution in the server's URL template.
      */
     @Parameter
-    private Map<String, SwaggerServerVariable> variables;
+    private Map<String, SwaggerServerVariable> variables = Collections.emptyMap();
 
     @Parameter
-    private Map<String, Object> extensions;
+    private Map<String, Object> extensions = Collections.emptyMap();
 
     public Server createServerModel() {
         Server server = new Server();
@@ -47,9 +48,7 @@ public class SwaggerServer {
             server.setVariables(vs);
         }
 
-        if (extensions != null && !extensions.isEmpty()) {
-            server.setExtensions(extensions);
-        }
+        server.setExtensions(extensions);
 
         return server;
     }

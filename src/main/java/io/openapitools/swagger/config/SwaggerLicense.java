@@ -2,6 +2,7 @@ package io.openapitools.swagger.config;
 
 import io.swagger.v3.oas.models.info.License;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.maven.plugins.annotations.Parameter;
@@ -24,7 +25,7 @@ public class SwaggerLicense {
     private String url;
     
     @Parameter
-    private Map<String, Object> extensions;
+    private Map<String, Object> extensions = Collections.emptyMap();
 
     public License createLicenseModel() {
         License license = new License();
@@ -37,9 +38,7 @@ public class SwaggerLicense {
             license.setUrl(url);
         }
         
-        if (extensions != null && !extensions.isEmpty()) {
-            license.setExtensions(extensions);
-        }
+        license.setExtensions(extensions);
 
         return license;
     }

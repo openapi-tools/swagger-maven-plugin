@@ -1,5 +1,6 @@
 package io.openapitools.swagger.config;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.maven.plugins.annotations.Parameter;
@@ -23,7 +24,7 @@ public class SwaggerExternalDoc {
     private String url;
 
     @Parameter
-    private Map<String, Object> extensions;
+    private Map<String, Object> extensions = Collections.emptyMap();
 
     public ExternalDocumentation createExternalDocModel() {
         ExternalDocumentation externalDoc = new ExternalDocumentation();
@@ -36,9 +37,7 @@ public class SwaggerExternalDoc {
             externalDoc.setUrl(url);
         }
 
-        if (extensions != null && !extensions.isEmpty()) {
-            externalDoc.setExtensions(extensions);
-        }
+        externalDoc.setExtensions(extensions);
 
         return externalDoc;
     }

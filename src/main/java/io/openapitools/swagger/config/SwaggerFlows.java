@@ -1,5 +1,6 @@
 package io.openapitools.swagger.config;
 
+import java.util.Collections;
 import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,19 +37,23 @@ public class SwaggerFlows {
     private Entry authorizationCode;
 
     @Parameter
-    private Map<String, Object> extensions;
+    private Map<String, Object> extensions = Collections.emptyMap();
 
     public OAuthFlows createOAuthFlowsModel() {
         OAuthFlows flows = new OAuthFlows();
-        flows.setImplicit(implicit.toOAuthFlowModel());
-        flows.setPassword(password.toOAuthFlowModel());
-        flows.setClientCredentials(clientCredentials.toOAuthFlowModel());
-        flows.setAuthorizationCode(authorizationCode.toOAuthFlowModel());
-
-        if (extensions != null && !extensions.isEmpty()) {
-            flows.setExtensions(extensions);
+        if (implicit != null) {
+            flows.setImplicit(implicit.toOAuthFlowModel());
         }
-
+        if (password != null) {
+            flows.setPassword(password.toOAuthFlowModel());
+        }
+        if (clientCredentials != null) {
+            flows.setClientCredentials(clientCredentials.toOAuthFlowModel());
+        }
+        if (authorizationCode != null) {
+            flows.setAuthorizationCode(authorizationCode.toOAuthFlowModel());
+        }
+        flows.setExtensions(extensions);
         return flows;
     }
 
@@ -75,10 +80,10 @@ public class SwaggerFlows {
          * REQUIRED. The available scopes for the OAuth2 security scheme. A map between the scope name and a short description for it.
          */
         @Parameter(required = true)
-        private Map<String, String> scopes;
+        private Map<String, String> scopes = Collections.emptyMap();
 
         @Parameter
-        private Map<String, Object> extensions;
+        private Map<String, Object> extensions = Collections.emptyMap();
 
         public OAuthFlow toOAuthFlowModel() {
             OAuthFlow flow = new OAuthFlow();
@@ -86,7 +91,7 @@ public class SwaggerFlows {
             flow.setAuthorizationUrl(authorizationUrl);
             flow.setTokenUrl(tokenUrl);
             flow.setRefreshUrl(refreshUrl);
-            if (scopes != null && !scopes.isEmpty()){
+            if (scopes != null && !scopes.isEmpty()) {
                 Scopes ss = new Scopes();
                 scopes.entrySet().forEach(s -> ss.addString(s.getKey(), s.getValue()));
                 flow.setScopes(ss);

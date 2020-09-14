@@ -4,9 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.maven.plugins.annotations.Parameter;
-
-import io.swagger.v3.oas.models.servers.ServerVariable;
 
 public class SwaggerServerVariable {
 
@@ -35,7 +34,7 @@ public class SwaggerServerVariable {
     @Parameter
     private Map<String, Object> extensions;
 
-    public ServerVariable createServerVariableModel() {
+    public io.swagger.v3.oas.models.servers.ServerVariable createServerVariableModel() {
         ServerVariable serverVar = new ServerVariable();
 
         serverVar.setDefault(defaultValue);
@@ -49,6 +48,11 @@ public class SwaggerServerVariable {
         }
 
         return serverVar;
+    }
+
+    @JsonPropertyOrder({"description", "default", "enum"})
+    public static class ServerVariable extends io.swagger.v3.oas.models.servers.ServerVariable {
+
     }
 
 }

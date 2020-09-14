@@ -60,7 +60,9 @@ public enum OutputFormat {
 
         @Override
         public void write(OpenAPI swagger, File file, boolean prettyPrint) throws IOException {
-            Yaml.mapper().writeValue(file, swagger);
+            ObjectMapper mapper = Yaml.mapper();
+            mapper.addMixIn(ServerVariable.class, SwaggerServerVariable.ServerVariableMixin.class);
+            mapper.writeValue(file, swagger);
         }
     }
 }

@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.models.servers.ServerVariable;
 import org.apache.maven.plugins.annotations.Parameter;
 
 public class SwaggerServerVariable {
@@ -34,7 +36,7 @@ public class SwaggerServerVariable {
     @Parameter
     private Map<String, Object> extensions;
 
-    public io.swagger.v3.oas.models.servers.ServerVariable createServerVariableModel() {
+    public ServerVariable createServerVariableModel() {
         ServerVariable serverVar = new ServerVariable();
 
         serverVar.setDefault(defaultValue);
@@ -50,27 +52,10 @@ public class SwaggerServerVariable {
         return serverVar;
     }
 
-    @JsonPropertyOrder({"description", "default", "enum", "extensions"})
-    public static class ServerVariable extends io.swagger.v3.oas.models.servers.ServerVariable {
-        @Override
-        public List<String> getEnum() {
-            return super.getEnum();
-        }
-
-        @Override
-        public String getDefault() {
-            return super.getDefault();
-        }
-
-        @Override
-        public String getDescription() {
-            return super.getDescription();
-        }
-
-        @Override
-        public Map<String, Object> getExtensions() {
-            return super.getExtensions();
-        }
+    @JsonPropertyOrder({"description", "default", "enum"})
+    public static abstract class ServerVariableMixin {
+        @JsonAnyGetter
+        public abstract Map<String, Object> getExtensions();
     }
 
 }

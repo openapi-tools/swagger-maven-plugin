@@ -75,11 +75,11 @@ components:
       type: object
       properties:
         accountNo:
-          pattern: ^[0-9]+$
+          pattern: "^[0-9]+$"
           type: string
         name:
-          pattern: .{1,40}
+          pattern: ".{1,40}"
           type: string
         regNo:
-          pattern: ^[0-9]{4}$
+          pattern: "^[0-9]{4}$"
           type: string

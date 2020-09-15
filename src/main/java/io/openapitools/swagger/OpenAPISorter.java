@@ -47,6 +47,10 @@ public class OpenAPISorter {
      * Sort all the elements of Paths.
      */
     private static Paths sortPaths(Paths paths) {
+        if (paths == null) {
+            return null;
+        }
+
         TreeMap<String, PathItem> sorted = new TreeMap<>(paths);
         paths.clear();
         paths.putAll(sorted);

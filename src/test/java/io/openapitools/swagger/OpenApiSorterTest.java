@@ -78,4 +78,10 @@ public class OpenApiSorterTest {
         assertEquals("k1", api.getComponents().getCallbacks().keySet().stream().findFirst().get());
         assertEquals("p1", api.getPaths().keySet().stream().findFirst().get());
     }
+
+    @Test
+    public void testEmptyModel() {
+        OpenAPI api = new OpenAPI();
+        api = OpenAPISorter.sort(api);
+    }
 }

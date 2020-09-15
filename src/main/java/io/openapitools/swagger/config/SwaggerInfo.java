@@ -9,21 +9,41 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 public class SwaggerInfo {
 
-    @Parameter
+    /**
+     * REQUIRED. The title of the application.
+     */
+    @Parameter(required = true)
     private String title;
 
-    @Parameter
+    /**
+     * REQUIRED. The version of the OpenAPI document (which is distinct from the
+     * OpenAPI Specification version or the API implementation version).
+     */
+    @Parameter(required = true)
     private String version;
 
+    /**
+     * A short description of the application. CommonMark syntax MAY be used for
+     * rich text representation.
+     */
     @Parameter
     private String description;
 
+    /**
+     * A URL to the Terms of Service for the API. MUST be in the format of a URL.
+     */
     @Parameter
     private String termsOfService;
 
+    /**
+     * The contact information for the exposed API.
+     */
     @Parameter
     private SwaggerContact contact;
 
+    /**
+     * The license information for the exposed API.
+     */
     @Parameter
     private SwaggerLicense license;
 

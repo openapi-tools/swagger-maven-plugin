@@ -1,12 +1,15 @@
 package io.openapitools.swagger;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.openapitools.swagger.config.SwaggerServerVariable;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
-import java.io.File;
-import java.io.IOException;
+import io.swagger.v3.oas.models.servers.ServerVariable;
 
 /**
  * Supported output formats.
@@ -42,6 +45,7 @@ public enum OutputFormat {
         @Override
         public void write(OpenAPI swagger, File file, boolean prettyPrint) throws IOException {
             ObjectMapper mapper = Json.mapper();
+            mapper.addMixIn(ServerVariable.class, SwaggerServerVariable.ServerVariableMixin.class);
             if (prettyPrint) {
                 mapper.enable(SerializationFeature.INDENT_OUTPUT);
             }
@@ -56,7 +60,9 @@ public enum OutputFormat {
 
         @Override
         public void write(OpenAPI swagger, File file, boolean prettyPrint) throws IOException {
-            Yaml.mapper().writeValue(file, swagger);
+            ObjectMapper mapper = Yaml.mapper();
+            mapper.addMixIn(ServerVariable.class, SwaggerServerVariable.ServerVariableMixin.class);
+            mapper.writeValue(file, swagger);
         }
     }
 }

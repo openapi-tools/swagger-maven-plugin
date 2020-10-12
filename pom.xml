@@ -59,7 +59,7 @@
         <io.swagger.core.v3.version>2.1.4</io.swagger.core.v3.version>
         <javax.xml.bin.jaxb-api.version>2.3.0</javax.xml.bin.jaxb-api.version>
         <javax.ws.rs.version>2.1</javax.ws.rs.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <org.apache.maven.maven-plugin-annotations.version>3.5</org.apache.maven.maven-plugin-annotations.version>
         <org.apache.maven.version>3.6.0</org.apache.maven.version>
         <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>

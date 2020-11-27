@@ -58,6 +58,41 @@
                             </server>
                         </servers>
                         <components>
+                            <schemas>
+                                <first>
+                                    <type>string</type>
+                                    <description>string schema</description>
+                                    <example>first string</example>
+                                    <extensions>
+                                        <x-custom-property>In first Schema</x-custom-property>
+                                    </extensions>
+                                </first>
+                                <second>
+                                    <type>object</type>
+                                    <description>object schema</description>
+                                    <properties>
+                                        <key1>
+                                            <type>string</type>
+                                            <example>key1 example</example>
+                                        </key1>
+                                        <key2>
+                                            <type>object</type>
+                                            <properties>
+                                                <inner>
+                                                    <type>string</type>
+                                                </inner>
+                                            </properties>
+                                        </key2>
+                                        <key3>
+                                            <type>boolean</type>
+                                            <example>true</example>
+                                        </key3>
+                                    </properties>
+                                    <extensions>
+                                        <x-custom-property>In second Schema</x-custom-property>
+                                    </extensions>
+                                </second>
+                            </schemas>
                             <securitySchemes>
                                 <first>
                                     <type>apikey</type>

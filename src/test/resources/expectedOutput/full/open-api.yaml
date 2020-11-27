@@ -110,6 +110,27 @@ components:
         regNo:
           pattern: "^[0-9]{4}$"
           type: string
+    first:
+      type: string
+      description: string schema
+      example: first string
+      x-custom-property: In first Schema
+    second:
+      type: object
+      properties:
+        key1:
+          type: string
+          example: key1 example
+        key2:
+          type: object
+          properties:
+            inner:
+              type: string
+        key3:
+          type: boolean
+          example: true
+      description: object schema
+      x-custom-property: In second Schema
   securitySchemes:
     first:
       type: apiKey

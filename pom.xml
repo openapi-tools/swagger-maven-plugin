@@ -50,8 +50,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <com.fasterxml.jackson.core.version>2.10.1</com.fasterxml.jackson.core.version>
-        <com.google.guava.version>28.1-jre</com.google.guava.version>
+        <com.fasterxml.jackson.core.version>2.10.5.1</com.fasterxml.jackson.core.version>
+        <com.google.guava.version>30.0-jre</com.google.guava.version>
         <groovy.version>1.8.0</groovy.version>
         <groovy.eclipse.compiler.version>2.7.0-01</groovy.eclipse.compiler.version>
         <groovy-eclipse-batch.version>2.0.4-04</groovy-eclipse-batch.version>
@@ -64,7 +64,7 @@
         <org.apache.maven.version>3.6.0</org.apache.maven.version>
         <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>
         <org.mockito.version>3.2.0</org.mockito.version>
-        <org.reflections.version>0.9.11</org.reflections.version>
+        <org.reflections.version>0.9.12</org.reflections.version>
         <org.slf4j.version>1.7.29</org.slf4j.version>
     </properties>
 

@@ -14,14 +14,24 @@ public class SwaggerComponents {
     @Parameter
     private Map<String,SwaggerSecurityScheme> securitySchemes;
 
+    /**
+     * Schema (under Components)
+     */
+    @Parameter
+    private Map<String, SwaggerSchema> schemas;
+
     // TODO: implement schemas, responses, ... from
     // https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#componentsObject
 
     public Components createComponentsModel() {
-        Components components = new Components();
+        final Components components = new Components();
 
         if (securitySchemes != null && !securitySchemes.isEmpty()) {
-            securitySchemes.entrySet().forEach(s -> components.addSecuritySchemes(s.getKey(), s.getValue().createSecuritySchemaModel()));
+            securitySchemes.forEach((key, value) -> components.addSecuritySchemes(key, value.createSecuritySchemaModel()));
+        }
+
+        if (schemas != null && !schemas.isEmpty()) {
+            schemas.forEach((key, value) -> components.addSchemas(key, value.createSchemaModel()));
         }
 
         return components;

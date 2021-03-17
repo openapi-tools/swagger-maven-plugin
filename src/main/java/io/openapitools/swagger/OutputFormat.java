@@ -1,12 +1,13 @@
 package io.openapitools.swagger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import io.swagger.models.Swagger;
+import io.swagger.util.Json;
+import io.swagger.util.Yaml;
+
 import java.io.File;
 import java.io.IOException;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.models.Swagger;
-import io.swagger.util.Yaml;
 
 /**
  * Supported output formats.
@@ -22,8 +23,8 @@ public enum OutputFormat {
         this.writer = writer;
     }
 
-    public void write(Swagger swagger, File file) throws IOException {
-        writer.write(swagger, file);
+    public void write(Swagger swagger, File file, boolean prettyPrint) throws IOException {
+        writer.write(swagger, file, prettyPrint);
     }
 
     /**
@@ -31,7 +32,7 @@ public enum OutputFormat {
      */
     @FunctionalInterface
     interface SwaggerWriter {
-        void write(Swagger swagger, File file) throws IOException;
+        void write(Swagger swagger, File file, boolean prettyPrint) throws IOException;
     }
 
     /**
@@ -40,9 +41,11 @@ public enum OutputFormat {
     static class JSONWriter implements SwaggerWriter {
 
         @Override
-        public void write(Swagger swagger, File file) throws IOException {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        public void write(Swagger swagger, File file, boolean prettyPrint) throws IOException {
+            ObjectMapper mapper = Json.mapper();
+            if (prettyPrint) {
+                mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            }
             mapper.writeValue(file, swagger);
         }
     }
@@ -53,7 +56,7 @@ public enum OutputFormat {
     static class YAMLWriter implements SwaggerWriter {
 
         @Override
-        public void write(Swagger swagger, File file) throws IOException {
+        public void write(Swagger swagger, File file, boolean prettyPrint) throws IOException {
             Yaml.mapper().writeValue(file, swagger);
         }
     }

@@ -50,13 +50,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <com.fasterxml.jackson.core.version>2.10.5.1</com.fasterxml.jackson.core.version>
+        <com.fasterxml.jackson.core.version>2.12.2</com.fasterxml.jackson.core.version>
         <com.google.guava.version>30.0-jre</com.google.guava.version>
         <groovy.version>1.8.0</groovy.version>
         <groovy.eclipse.compiler.version>2.7.0-01</groovy.eclipse.compiler.version>
         <groovy-eclipse-batch.version>2.0.4-04</groovy-eclipse-batch.version>
-        <io.openapitools.jackson.dataformat.version>1.0.4</io.openapitools.jackson.dataformat.version>
-        <io.swagger.core.v3.version>2.1.4</io.swagger.core.v3.version>
+        <io.openapitools.jackson.dataformat.version>1.0.8</io.openapitools.jackson.dataformat.version>
+        <io.swagger.core.v3.version>2.1.7</io.swagger.core.v3.version>
         <javax.xml.bin.jaxb-api.version>2.3.0</javax.xml.bin.jaxb-api.version>
         <javax.ws.rs.version>2.1</javax.ws.rs.version>
         <junit.version>4.13.1</junit.version>

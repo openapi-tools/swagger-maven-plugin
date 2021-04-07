@@ -35,11 +35,13 @@ paths:
         in: path
         required: true
         schema:
+          pattern: "^[0-9]{4}$"
           type: string
       - name: accountNo
         in: path
         required: true
         schema:
+          pattern: "^[0-9]+$"
           type: string
       responses:
         "404":
@@ -52,11 +54,13 @@ paths:
         in: path
         required: true
         schema:
+          pattern: "^[0-9]{4}$"
           type: string
       - name: accountNo
         in: path
         required: true
         schema:
+          pattern: "^[0-9]+$"
           type: string
       requestBody:
         content:

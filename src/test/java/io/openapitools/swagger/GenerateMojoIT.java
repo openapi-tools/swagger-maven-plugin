@@ -133,6 +133,11 @@ public class GenerateMojoIT {
         testGenerate("recursive", "swagger", "generate-mojo-recursive-pom.xml", true, OutputFormat.JSON);
     }
 
+    @Test
+    public void testGenerateBasePath() throws Exception {
+        testGenerate("basePath", "swagger", "generate-mojo-basePath-pom.xml", false, OutputFormat.JSON);
+    }
+
     private static class DeleteVisitor extends SimpleFileVisitor<Path> {
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

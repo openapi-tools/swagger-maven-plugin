@@ -7,14 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 import io.openapitools.swagger.config.SwaggerConfig;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.PathItem;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -100,6 +98,15 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(defaultValue = "false")
     private boolean prettyPrint;
 
+    /**
+     * When set, the plugin cuts the basePath from every path Entry. Example /contract/vi/getAll -> /getAll if parameter
+     * is set as "/contract/v1"
+     */
+    @Parameter(defaultValue = "")
+    private String basePath;
+
+
+
     @Component
     private MavenProjectHelper projectHelper;
 
@@ -126,6 +133,9 @@ public class GenerateMojo extends AbstractMojo {
 
             OpenAPI swagger = OpenAPISorter.sort(reader.read(reflectiveScanner.classes()));
 
+            OpenAPI finalSwagger = removeBasePathfromEndpoints(swagger);
+
+
             if (outputDirectory.mkdirs()) {
                 getLog().debug("Created output directory " + outputDirectory);
             }
@@ -133,7 +143,7 @@ public class GenerateMojo extends AbstractMojo {
             outputFormats.forEach(format -> {
                 try {
                     File outputFile = new File(outputDirectory, outputFilename + "." + format.name().toLowerCase());
-                    format.write(swagger, outputFile, prettyPrint);
+                    format.write(finalSwagger, outputFile, prettyPrint);
                     if (attachSwaggerArtifact) {
                         projectHelper.attachArtifact(project, format.name().toLowerCase(), "swagger", outputFile);
                     }
@@ -145,6 +155,19 @@ public class GenerateMojo extends AbstractMojo {
             // reset the TCCL back to the original class loader
             Thread.currentThread().setContextClassLoader(origClzLoader);
         }
+    }
+
+    private OpenAPI removeBasePathfromEndpoints(OpenAPI swagger) {
+        if (basePath == null || basePath.isEmpty()){
+            return  swagger;
+        }
+        io.swagger.v3.oas.models.Paths oldPathMap = swagger.getPaths();
+        io.swagger.v3.oas.models.Paths newPathMap = new io.swagger.v3.oas.models.Paths();
+        for(Map.Entry<String, PathItem> entry : oldPathMap.entrySet()) {
+            newPathMap.put(entry.getKey().replace(basePath, "").replace("//", "/"), entry.getValue());
+        }
+        swagger.setPaths(newPathMap);
+        return swagger;
     }
 
     private Application resolveApplication(JaxRSScanner reflectiveScanner) {

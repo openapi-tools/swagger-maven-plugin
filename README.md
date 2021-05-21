@@ -91,7 +91,12 @@ Most general properties of the Swagger model is configurable using the swaggerCo
       <descriptionFile>src/test/resources/descriptions.md</descriptionFile>
     </swaggerConfig>
 ```
+## Additional Configuration Parameters
 
+Name | Type | description
+--- | --- | --- |
+pretty-print | Boolean |  Prints the outcome in a easy readable stylistic formatting.
+basePath | String | Deletes the Basepath from any Path variable. May be necessary if the versioning should not be part of the Path parameter but necessary as class annotation.
 
 ## Deploying
 

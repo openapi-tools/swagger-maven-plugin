@@ -61,7 +61,7 @@
         <javax.ws.rs.version>2.1</javax.ws.rs.version>
         <junit.version>4.13.1</junit.version>
         <org.apache.maven.maven-plugin-annotations.version>3.5</org.apache.maven.maven-plugin-annotations.version>
-        <org.apache.maven.version>3.6.0</org.apache.maven.version>
+        <org.apache.maven.version>3.9.2</org.apache.maven.version>
         <org.apache.maven.plugin-testing.version>3.3.0</org.apache.maven.plugin-testing.version>
         <org.mockito.version>3.2.0</org.mockito.version>
         <org.reflections.version>0.9.12</org.reflections.version>

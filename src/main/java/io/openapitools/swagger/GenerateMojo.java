@@ -110,40 +110,29 @@ public class GenerateMojo extends AbstractMojo {
             return;
         }
 
-        ClassLoader origClzLoader = Thread.currentThread().getContextClassLoader();
-        ClassLoader clzLoader = createClassLoader(origClzLoader);
+        Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
+
+        JaxRSScanner reflectiveScanner = new JaxRSScanner(getLog(), createClassLoader(), resourcePackages, useResourcePackagesChildren);
+
+        Application application = resolveApplication(reflectiveScanner);
+        reader.setApplication(application);
+
+        OpenAPI swagger = OpenAPISorter.sort(reader.read(reflectiveScanner.classes()));
+
+        if (outputDirectory.mkdirs()) {
+            getLog().debug("Created output directory " + outputDirectory);
+        }
 
         try {
-            // set the TCCL before everything else
-            Thread.currentThread().setContextClassLoader(clzLoader);
-
-            Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
-
-            JaxRSScanner reflectiveScanner = new JaxRSScanner(getLog(), resourcePackages, useResourcePackagesChildren);
-
-            Application application = resolveApplication(reflectiveScanner);
-            reader.setApplication(application);
-
-            OpenAPI swagger = OpenAPISorter.sort(reader.read(reflectiveScanner.classes()));
-
-            if (outputDirectory.mkdirs()) {
-                getLog().debug("Created output directory " + outputDirectory);
-            }
-
-            outputFormats.forEach(format -> {
-                try {
-                    File outputFile = new File(outputDirectory, outputFilename + "." + format.name().toLowerCase());
-                    format.write(swagger, outputFile, prettyPrint);
-                    if (attachSwaggerArtifact) {
-                        projectHelper.attachArtifact(project, format.name().toLowerCase(), "swagger", outputFile);
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException("Unable write " + outputFilename + " document", e);
+            for (OutputFormat format : outputFormats) {
+                File outputFile = new File(outputDirectory, outputFilename + "." + format.name().toLowerCase());
+                format.write(swagger, outputFile, prettyPrint);
+                if (attachSwaggerArtifact) {
+                    projectHelper.attachArtifact(project, format.name().toLowerCase(), "swagger", outputFile);
                 }
-            });
-        } finally {
-            // reset the TCCL back to the original class loader
-            Thread.currentThread().setContextClassLoader(origClzLoader);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Unable write " + outputFilename + " document", e);
         }
     }
 
@@ -164,7 +153,7 @@ public class GenerateMojo extends AbstractMojo {
         return ClassUtils.createInstance(appClazz);
     }
 
-    private URLClassLoader createClassLoader(ClassLoader parent) {
+    private URLClassLoader createClassLoader() {
         try {
             Collection<String> dependencies = getDependentClasspathElements();
             URL[] urls = new URL[dependencies.size()];
@@ -172,7 +161,7 @@ public class GenerateMojo extends AbstractMojo {
             for (String dependency : dependencies) {
                 urls[index++] = Paths.get(dependency).toUri().toURL();
             }
-            return new URLClassLoader(urls, parent);
+            return new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
         } catch (MalformedURLException e) {
             throw new RuntimeException("Unable to create class loader with compiled classes", e);
         } catch (DependencyResolutionRequiredException e) {

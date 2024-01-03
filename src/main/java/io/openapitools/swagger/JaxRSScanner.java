@@ -2,7 +2,6 @@ package io.openapitools.swagger;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,42 +25,48 @@ class JaxRSScanner {
 
     private final Log log;
 
+    private final ClassGraph classGraph;
+
     private final Set<String> resourcePackages;
 
     private final boolean useResourcePackagesChildren;
 
-    public JaxRSScanner(Log log, Set<String> resourcePackages, Boolean useResourcePackagesChildren) {
+    public JaxRSScanner(Log log, ClassLoader clzLoader, Set<String> resourcePackages, Boolean useResourcePackagesChildren) {
         this.log = log;
+        this.classGraph = new ClassGraph().enableClassInfo().enableAnnotationInfo()
+                .addClassLoader(clzLoader);
         this.resourcePackages = resourcePackages == null ? Collections.emptySet() : new HashSet<>(resourcePackages);
         this.useResourcePackagesChildren = Boolean.TRUE.equals(useResourcePackagesChildren);
     }
 
     Application applicationInstance() {
-        ClassGraph classGraph = new ClassGraph().enableClassInfo();
+        Application applicationInstance = null;
         try (ScanResult scanResult = classGraph.scan()) {
-            List<ClassInfo> applicationClasses = scanResult.getSubclasses(Application.class.getName()).stream()
-                    .filter(this::filterClassByResourcePackages)
-                    .collect(Collectors.toList());
+            ClassInfoList applicationClasses = scanResult.getSubclasses(Application.class.getName())
+                    .filter(this::filterClassByResourcePackages);
             if (applicationClasses.size() == 1) {
-                return ClassUtils.createInstance(applicationClasses.get(0).loadClass(Application.class));
-            }
-            if (applicationClasses.size() > 1) {
+                applicationInstance = ClassUtils.createInstance(applicationClasses.get(0).loadClass(Application.class));
+            } else if (applicationClasses.size() > 1) {
                 log.warn("More than one javax.ws.rs.core.Application classes found on the classpath, skipping");
             }
         }
-        return null;
+        return applicationInstance;
     }
 
     Set<Class<?>> classes() {
-        ClassGraph classGraph = new ClassGraph().enableClassInfo().enableAnnotationInfo();
+        Set<Class<?>> classes;
         try (ScanResult scanResult = classGraph.scan()) {
             ClassInfoList apiClasses = scanResult.getClassesWithAnnotation(Path.class.getName());
             ClassInfoList defClasses = scanResult.getClassesWithAnnotation(OpenAPIDefinition.class.getName());
-            return Stream.concat(apiClasses.stream(), defClasses.stream())
-                    .filter(this::filterClassByResourcePackages)
+            classes = Stream.of(apiClasses, defClasses)
+                    .flatMap(classList -> classList.filter(this::filterClassByResourcePackages).stream())
                     .map(ClassInfo::loadClass)
                     .collect(Collectors.toSet());
         }
+        if (classes.isEmpty()) {
+            log.warn("No @Path or @OpenAPIDefinition annotated classes found in given resource packages: " + resourcePackages);
+        }
+        return classes;
     }
 
     private boolean filterClassByResourcePackages(ClassInfo cls) {

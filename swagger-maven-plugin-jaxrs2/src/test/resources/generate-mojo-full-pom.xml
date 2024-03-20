@@ -1,0 +1,175 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.openapitools.swagger.test</groupId>
+    <artifactId>mojo-test</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Swagger Generate Maven Mojo</name>
+
+    <dependencies>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.github.dgautier</groupId>
+                <artifactId>swagger-maven-plugin-jaxrs2</artifactId>
+                <configuration>
+                    <swaggerConfig>
+                        <info>
+                            <title>Title</title>
+                            <version>1.0.0</version>
+                            <termsOfService>Terms</termsOfService>
+                            <contact>
+                                <email>e@mail.com</email>
+                                <name>My Name</name>
+                                <url>https://google.com</url>
+                            </contact>
+                            <license>
+                                <url>https://license</url>
+                                <name>MIT</name>
+                            </license>
+                            <extensions>
+                                <x-custom-property>In Info</x-custom-property>
+                            </extensions>
+                        </info>
+                        <descriptionFile>src/test/resources/descriptions.md</descriptionFile>
+                        <servers>
+                            <server>
+                                <url>https://{sub}.example.it/base/path</url>
+                                <description>Example URL</description>
+                                <variables>
+                                    <sub>
+                                        <description>The Subdomain</description>
+                                        <defaultValue>services</defaultValue>
+                                        <enumValues>
+                                            <v>services</v>
+                                            <v>web</v>
+                                            <v>main</v>
+                                        </enumValues>
+                                        <extensions>
+                                            <x-custom-property>In ServerVariable</x-custom-property>
+                                        </extensions>
+                                    </sub>
+                                </variables>
+                                <extensions>
+                                    <x-custom-property>In Server</x-custom-property>
+                                </extensions>
+                            </server>
+                        </servers>
+                        <components>
+                            <securitySchemes>
+                                <first>
+                                    <type>apikey</type>
+                                    <description>Via web gateway</description>
+                                    <name>X-API-TOKEN</name>
+                                    <in>header</in>
+                                    <extensions>
+                                        <x-custom-property>In first SecurityScheme</x-custom-property>
+                                    </extensions>
+                                </first>
+                                <second>
+                                    <type>http</type>
+                                    <scheme>MyCredentials</scheme>
+                                    <bearerFormat>password</bearerFormat>
+                                </second>
+                                <third>
+                                    <type>oauth2</type>
+                                    <flows>
+                                        <implicit>
+                                            <authorizationUrl>https://auth.example.org</authorizationUrl>
+                                            <refreshUrl>https://refresh.example.org</refreshUrl>
+                                            <scopes>
+                                                <x>y</x>
+                                            </scopes>
+                                            <extensions>
+                                                <x-custom-property>In third SecurityScheme's implicit flow</x-custom-property>
+                                            </extensions>
+                                        </implicit>
+                                        <password>
+                                            <tokenUrl>https://token.example.org</tokenUrl>
+                                            <scopes></scopes>
+                                        </password>
+                                        <clientCredentials>
+                                            <tokenUrl>https://client.token.example.org</tokenUrl>
+                                            <scopes></scopes>
+                                        </clientCredentials>
+                                        <authorizationCode>
+                                            <authorizationUrl>https://code.auth.example.org</authorizationUrl>
+                                            <tokenUrl>https://code.token.example.org</tokenUrl>
+                                            <scopes></scopes>
+                                        </authorizationCode>
+                                        <extensions>
+                                            <x-custom-property>In third SecurityScheme's flow</x-custom-property>
+                                        </extensions>
+                                    </flows>
+                                </third>
+                                <fourth>
+                                    <type>openIdConnect</type>
+                                    <openIdConnectUrl>https://id.example.org</openIdConnectUrl>
+                                </fourth>
+                            </securitySchemes>
+                        </components>
+                        <securityRequirements>
+                            <one>
+                                <entries>
+                                    <entry>
+                                        <name>first</name>
+                                    </entry>
+                                </entries>
+                            </one>
+                            <three>
+                                <entries>
+                                    <entry>
+                                        <name>third</name>
+                                        <list>
+                                            <scope>requiredScope1</scope>
+                                            <scope>requiredScope2</scope>
+                                        </list>
+                                    </entry>
+                                </entries>
+                            </three>
+                        </securityRequirements>
+                        <tags>
+                            <tag>
+                                <name>MyTag</name>
+                                <description>MyDescription</description>
+                                <externalDoc>
+                                    <description>Some tag's external doc</description>
+                                    <url>https://tag.example.org</url>
+                                    <extensions>
+                                        <x-custom-property>In tag's external document</x-custom-property>
+                                    </extensions>
+                                </externalDoc>
+                                <extensions>
+                                    <x-custom-property>In tag</x-custom-property>
+                                </extensions>
+                            </tag>
+                        </tags>
+                        <externalDoc>
+                            <description>Some external doc at config level</description>
+                            <url>https://example.org</url>
+                            <extensions>
+                                <x-custom-property>In configs's external document</x-custom-property>
+                            </extensions>
+                        </externalDoc>
+                        <extensions>
+                            <x-custom-property>In Config</x-custom-property>
+                        </extensions>
+                    </swaggerConfig>
+                    <resourcePackages>
+                        <resourcePackage>io.openapitools.swagger.example</resourcePackage>
+                    </resourcePackages>
+                    <outputFormats>
+                        <outputFormat>JSON</outputFormat>
+                        <outputFormat>YAML</outputFormat>
+                    </outputFormats>
+                    <outputDirectory>target/full</outputDirectory>
+                    <outputFilename>open-api</outputFilename>
+
+                    <project implementation="io.openapitools.swagger.MavenProjectStub"/>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

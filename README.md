@@ -1,17 +1,19 @@
 # Swagger Maven Plugin
 
 This plugin is intended to use the [Swagger Core library](https://github.com/swagger-api/swagger-core) to generate
-OpenAPI documentation from a JAX-RS based REST service with as little change as possible. This allows for @SwaggerDefinition, @ReaderListener and ModelConverters to work the same way as with the core Swagger library.
+OpenAPI documentation from a JAX-RS or Jakarta based REST service with as little change as possible. This allows for @SwaggerDefinition, @ReaderListener and ModelConverters to work the same way as with the core Swagger library.
 
 
 # Status
 
-The plugin is considered production ready. The version 2.x.x of the plugin is supporting generation of OpenAPI version 3 specifications using Swagger 2.x. To generate OpenAPI version 2 specifications using Swagger 1.x use the latest 1.x.x version of the plugin.
+The plugin is considered production ready. 
+- The version 3.X (not released) will support jakarta annotations
+- The version 2.x.x of the plugin is supporting generation of OpenAPI version 3 specifications using Swagger 2.x. 
+- To generate OpenAPI version 2 specifications using Swagger 1.x use the latest 1.x.x version of the plugin.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/)
 [![Javadoc](https://javadoc.io/badge/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://www.javadoc.io/doc/io.openapitools.swagger/swagger-maven-plugin)
-[![Build status](https://travis-ci.org/openapi-tools/swagger-maven-plugin.svg?branch=master)](https://travis-ci.org/openapi-tools/swagger-maven-plugin)
-[![Known Vulnerabilities](https://snyk.io/test/github/openapi-tools/swagger-maven-plugin/badge.svg)](https://snyk.io/test/github/openapi-tools/swagger-maven-plugin) 
+[![Build status](https://github.com/dgautier/swagger-maven-plugin/actions/workflows/build.yml/badge.svg)](https://travis-ci.org/openapi-tools/swagger-maven-plugin)
 
 
 # Usage
@@ -23,8 +25,8 @@ To have Swagger generate the OpenAPI specifications as part of the build add in 
   <plugins>
     ...
     <plugin>
-      <groupId>io.openapitools.swagger</groupId>
-      <artifactId>swagger-maven-plugin</artifactId>
+      <groupId>io.github.dgautier</groupId>
+      <artifactId>swagger-maven-plugin-jaxrs2</artifactId>
       <configuration>
         <resourcePackages>
           <resourcePackage>io.openapitools.swagger.example</resourcePackage>
@@ -33,7 +35,37 @@ To have Swagger generate the OpenAPI specifications as part of the build add in 
         <outputDirectory>${basedir}/target/</outputDirectory>
         <outputFilename>swagger</outputFilename>
         <outputFormats>JSON,YAML</outputFormats>
-        <prettyPrint>true</prettyPrint>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>generate</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  </plugins>
+</build>
+```
+
+Or Use the jakarta version :
+
+```xml
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>io.github.dgautier</groupId>
+      <artifactId>swagger-maven-plugin-jakarta</artifactId>
+      <configuration>
+        <resourcePackages>
+          <resourcePackage>io.openapitools.swagger.example</resourcePackage>
+          <resourcePackage>io.openapitools.swagger.example.alternate</resourcePackage>
+        </resourcePackages>
+        <outputDirectory>${basedir}/target/</outputDirectory>
+        <outputFilename>swagger</outputFilename>
+        <outputFormats>JSON,YAML</outputFormats>
       </configuration>
       <executions>
         <execution>
@@ -60,7 +92,7 @@ Most general properties of the Swagger model is configurable using the swaggerCo
 
 ```xml
 <plugin>
-  <groupId>io.openapitools.swagger</groupId>
+  <groupId>io.github.dgautier</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <swaggerConfig>
@@ -99,7 +131,7 @@ The generated OpenAPI specifications may be installed and deployed as Maven arti
 
 ```xml
 <plugin>
-  <groupId>io.openapitools.swagger</groupId>
+  <groupId>io.github.dgautier</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <attachSwaggerArtifact>true</attachSwaggerArtifact>

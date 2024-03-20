@@ -25,7 +25,7 @@ To have Swagger generate the OpenAPI specifications as part of the build add in 
   <plugins>
     ...
     <plugin>
-      <groupId>io.openapitools.swagger</groupId>
+      <groupId>io.github.dgautier</groupId>
       <artifactId>swagger-maven-plugin-jaxrs2</artifactId>
       <configuration>
         <resourcePackages>
@@ -56,7 +56,7 @@ Or Use the jakarta version :
   <plugins>
     ...
     <plugin>
-      <groupId>io.openapitools.swagger</groupId>
+      <groupId>io.github.dgautier</groupId>
       <artifactId>swagger-maven-plugin-jakarta</artifactId>
       <configuration>
         <resourcePackages>
@@ -92,7 +92,7 @@ Most general properties of the Swagger model is configurable using the swaggerCo
 
 ```xml
 <plugin>
-  <groupId>io.openapitools.swagger</groupId>
+  <groupId>io.github.dgautier</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <swaggerConfig>
@@ -131,7 +131,7 @@ The generated OpenAPI specifications may be installed and deployed as Maven arti
 
 ```xml
 <plugin>
-  <groupId>io.openapitools.swagger</groupId>
+  <groupId>io.github.dgautier</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <attachSwaggerArtifact>true</attachSwaggerArtifact>

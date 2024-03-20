@@ -30,7 +30,7 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>io.openapitools.swagger</groupId>
+                <groupId>io.github.dgautier</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
                 <version>@project.version@</version>
                 <configuration>

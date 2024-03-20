@@ -6,7 +6,7 @@
 
     <name>Swagger Maven Plugin</name>
 
-    <groupId>io.openapitools.swagger</groupId>
+    <groupId>io.github.dgautier</groupId>
     <version>3.0.0-SNAPSHOT</version>
     <artifactId>swagger-maven-plugin</artifactId>
     <packaging>pom</packaging>

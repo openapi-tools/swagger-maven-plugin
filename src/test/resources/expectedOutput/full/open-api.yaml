@@ -120,6 +120,7 @@ components:
       description: Via web gateway
       name: X-API-TOKEN
       in: header
+      x-custom-property: In first SecurityScheme
     fourth:
       type: openIdConnect
       openIdConnectUrl: https://id.example.org
